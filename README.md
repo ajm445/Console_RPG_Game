@@ -1,5 +1,6 @@
 # Console_RPG_Game
 ### 언어 : JAVA
+### 개발환경 : IntelliJ
 ### 구성 예정
 ```
 유저 : CRUD
