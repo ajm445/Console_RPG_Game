@@ -41,14 +41,16 @@ public class Main {
                     }
                     case 1 -> {
                         if(!User.login) {
+                            System.out.println("[회원가입]");
                             User.signUp();
                         }
                         else {
-                            System.out.println("게임시작!");
+                            GameManager.choiceJob();
                         }
                     }
                     case 2 -> {
                         if(!User.login) {
+                            System.out.println("[로그인]");
                             User.signIn();
                         }
                         else {
@@ -65,7 +67,7 @@ public class Main {
                             Main.mainMenu();
                         }
                     }
-                    case 4 -> User.manager.showAllUsers();
+                    case 4 -> User.userManager.showAllUsers();
                     default -> {
                         if(!User.login) {
                             System.out.println("0부터 2까지의 숫자 하나만 입력해주세요!");
