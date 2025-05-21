@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +13,6 @@ public class Main {
                             0. 게임종료
                             1. 회원가입
                              2. 로그인
-                           3. 아이디 변경
                 ***********************************
                 Enter number
                 """);
@@ -31,38 +31,52 @@ public class Main {
                 """);
             }
             System.out.print(">> ");
-            int check = in.nextInt();
-            in.nextLine();
-            switch (check) {
-                case 0 -> {
-                    System.out.println("게임을 종료합니다.");
-                    System.exit(0);
+            try {
+                int check = in.nextInt();
+                in.nextLine();
+                switch (check) {
+                    case 0 -> {
+                        System.out.println("게임을 종료합니다.");
+                        System.exit(0);
+                    }
+                    case 1 -> {
+                        if(!User.login) {
+                            User.signUp();
+                        }
+                        else {
+                            System.out.println("게임시작!");
+                        }
+                    }
+                    case 2 -> {
+                        if(!User.login) {
+                            User.signIn();
+                        }
+                        else {
+                            User.myPage();
+                        }
+                    }
+                    case 3 -> {
+                        if(User.login) {
+                            User.login = false;
+                            System.out.println("로그아웃 되었습니다.");
+                            Main.mainMenu();
+                        } else {
+                            System.out.println("0부터 2까지의 숫자 하나만 입력해주세요!");
+                            Main.mainMenu();
+                        }
+                    }
+                    case 4 -> User.manager.showAllUsers();
+                    default -> {
+                        if(!User.login) {
+                            System.out.println("0부터 2까지의 숫자 하나만 입력해주세요!");
+                        }
+                        else System.out.println("0부터 3까지의 숫자 하나만 입력해주세요!");
+                    }
                 }
-                case 1 -> {
-                    if(!User.login) {
-                        User.signUp();
-                    }
-                    else {
-                        System.out.println("게임시작!");
-                    }
-                }
-                case 2 -> {
-                    if(!User.login) {
-                        User.signIn();
-                    }
-                    else {
-                        System.out.println("마이페이지!");
-                    }
-                }
-                case 3 -> {
-                    if(!User.login) {
-                        User.modifyId();
-                    }
-                    User.login = false;
-                    System.out.println("로그아웃 되었습니다.");
-                    Main.mainMenu();
-                }
-                case 4 -> User.manager.showAllUsers();
+            } catch (InputMismatchException e) {
+                System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
+                in.nextLine();
+                Main.mainMenu();
             }
         }
     }
