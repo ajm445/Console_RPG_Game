@@ -5,7 +5,7 @@ public class Main {
     static Scanner in = new Scanner(System.in);
     public static void mainMenu() {
         while(true) {
-            if(!User.login) {
+            if(User.currentUser == null || !User.currentUser.isLogin()) {
                 System.out.print("""
                 ***********************************
                           Console RPG Game
@@ -40,16 +40,19 @@ public class Main {
                         System.exit(0);
                     }
                     case 1 -> {
-                        if(!User.login) {
+                        if(User.currentUser == null || !User.currentUser.isLogin()) {
                             System.out.println("[회원가입]");
                             User.signUp();
                         }
                         else {
-                            GameManager.choiceJob();
+                            if(!User.currentUser.hasCharacter()) {
+                                GameManager.choiceJob();
+                            }
+                            else GameManager.GameStart();
                         }
                     }
                     case 2 -> {
-                        if(!User.login) {
+                        if(User.currentUser == null || !User.currentUser.isLogin()) {
                             System.out.println("[로그인]");
                             User.signIn();
                         }
@@ -58,8 +61,8 @@ public class Main {
                         }
                     }
                     case 3 -> {
-                        if(User.login) {
-                            User.login = false;
+                        if(User.currentUser.isLogin()) {
+                            User.currentUser.setLogin(false);
                             System.out.println("로그아웃 되었습니다.");
                             Main.mainMenu();
                         } else {
@@ -69,7 +72,7 @@ public class Main {
                     }
                     case 4 -> User.userManager.showAllUsers();
                     default -> {
-                        if(!User.login) {
+                        if(!User.currentUser.isLogin()) {
                             System.out.println("0부터 2까지의 숫자 하나만 입력해주세요!");
                         }
                         else System.out.println("0부터 3까지의 숫자 하나만 입력해주세요!");
