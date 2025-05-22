@@ -3,7 +3,7 @@ public class Enemy {
     private int hp;
     private int atk;
     private int def;
-    private Enemy[] enemies = {
+    private static Enemy[] enemies = {
             new Enemy("약해용",50,10,0), // 약한 적
             new Enemy("느려용",200,10,30), // 체력 많고 느린 적
             new Enemy("빨라용",50,50,20), // 체력 적고 빠른 적
@@ -52,10 +52,15 @@ public class Enemy {
         this.atk = atk;
     }
 
+
     // method
-    public void enemyInfo() {
-        for (Enemy enemy : enemies) {
-            System.out.println(enemy);
-        }
+    public void enemiesInfo() {
+        System.out.println("***********************************");
+        System.out.println("           이름 : " + name);
+        System.out.println("체력 : " + hp + " | 공격력 : " + atk + " | 방어력 : " + def);
+    }
+
+    public static void showAllEnemies() {
+        for (Enemy enemy : enemies) enemy.enemiesInfo();
     }
 }
