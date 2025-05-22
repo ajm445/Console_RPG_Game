@@ -4,9 +4,10 @@ import java.util.Scanner;
 public class User {
     public static UserManager userManager = new UserManager();
     public static User currentUser;
-    public static boolean login = false;
+    private boolean login = false;
     private String id;
     private String pw;
+    private MyCharacter myCharacter;
 
     // 생성자
     public User(String id, String pw) {
@@ -31,9 +32,30 @@ public class User {
         this.pw = pw;
     }
 
+    public boolean isLogin() {
+        return login;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
+    }
+
+    public MyCharacter getMyCharacter() {
+        return myCharacter;
+    }
+
+    public void setMyCharacter(MyCharacter myCharacter) {
+        this.myCharacter = myCharacter;
+    }
+
     // method
+    public boolean hasCharacter() {
+        return this.myCharacter != null;
+    }
+
     public void printInfo() {
-        System.out.println("ID : " + id + " | PW: " + pw);
+        String jobInfo = (myCharacter != null) ? myCharacter.getJob() : "없음";
+        System.out.println("ID : " + id + " | PW : " + pw + " | Job : " + jobInfo);
     }
 
     public static void signUp() {  // 회원가입
@@ -66,7 +88,7 @@ public class User {
                     if(user.getPw().equals(pw)) {  // 플레이어의 비밀번호가 가져오는 비밀번호와 같으면 성립
                         currentUser = user;
                         System.out.println(id + " 계정 로그인 성공!");
-                        User.login = true;
+                        User.currentUser.setLogin(true);
                         Main.mainMenu();
                         break;
                     }
@@ -128,7 +150,7 @@ public class User {
                 User user = currentUser;
                 userManager.removeUser(user);
                 System.out.println("계정이 탈퇴되었습니다.");
-                User.login = false;
+                User.currentUser.setLogin(false);
                 Main.mainMenu();
             }
             else if(check == 'N' || check == 'n') {
@@ -182,7 +204,7 @@ public class User {
                         User.deleteId();
                         break;
                     case 4:
-                        if(User.login) {
+                        if(User.currentUser.isLogin()) {
                             System.out.println("[뒤로가기]");
                             Main.mainMenu();
                         } break;
