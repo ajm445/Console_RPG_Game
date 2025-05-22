@@ -160,7 +160,10 @@ public class GameManager {
                                 GameManager.GameStart();
                             }
                             case 'e' -> {
-                                
+                                System.out.println("적 정보");
+                                Enemy.showAllEnemies();
+                                GameManager.GameStart();
+                                return;
                             }
                             case 'l' -> {
                                 User.currentUser.setLogin(false);
