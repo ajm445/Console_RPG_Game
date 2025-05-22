@@ -1,9 +1,10 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class GameManager {
     static Scanner in = new Scanner(System.in);
-    public static boolean gameStart = false;
+    // public static boolean gameStart = false;
     // 출력 천천히 나오게 하는 메서드 : 블로그 참조 -> https://okky.kr/questions/554033
     public static void slowPrint(String message, long millisPerChar) {
         for (int i = 0; i < message.length(); i++) {
@@ -87,6 +88,7 @@ public class GameManager {
                        == 스테이지를 선택하세요 ==
                 ***********************************
                            *  캐릭터 상태(s)
+                             * 적 정보(e)
                             *  로그아웃(l)
                             *  종료하기(x)
                 ***********************************
@@ -156,6 +158,9 @@ public class GameManager {
                             case 's' -> {
                                 User.currentUser.getMyCharacter().state();
                                 GameManager.GameStart();
+                            }
+                            case 'e' -> {
+                                
                             }
                             case 'l' -> {
                                 User.currentUser.setLogin(false);
