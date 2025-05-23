@@ -87,8 +87,12 @@ public class GameManager {
                           Console RPG Game
                        == 스테이지를 선택하세요 ==
                 ***********************************
-                           *  캐릭터 상태(s)
+                """);
+        System.out.println("           * 보유 골드 : " + User.currentUser.getGold());
+        System.out.print("""
+                           *  캐릭터 상태(c)
                              * 적 정보(e)
+                              * 상점(s)
                             *  로그아웃(l)
                             *  종료하기(x)
                 ***********************************
@@ -155,7 +159,7 @@ public class GameManager {
                         }
                     } else {
                         switch (ch) {
-                            case 's' -> {
+                            case 'c' -> {
                                 User.currentUser.getMyCharacter().state();
                                 GameManager.GameStart();
                             }
@@ -163,6 +167,10 @@ public class GameManager {
                                 System.out.println("적 정보");
                                 Enemy.showAllEnemies();
                                 GameManager.GameStart();
+                                return;
+                            }
+                            case 's' -> {
+                                Store.store();
                                 return;
                             }
                             case 'l' -> {
