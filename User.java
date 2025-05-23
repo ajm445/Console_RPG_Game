@@ -8,6 +8,10 @@ public class User {
     private String id;
     private String pw;
     private MyCharacter myCharacter;
+    private int gold = 100;
+    private int atkItem = -1; // index 기반 장착 아이템
+    private int defItem = -1;
+    private boolean[] itemPurchased = new boolean[Item.getItems().length]; // 아이템 구매 여부
 
     // 생성자
     public User(String id, String pw) {
@@ -48,6 +52,10 @@ public class User {
         this.myCharacter = myCharacter;
     }
 
+    public int getGold() {
+        return gold;
+    }
+
     // method
     public boolean hasCharacter() {
         return this.myCharacter != null;
@@ -58,10 +66,15 @@ public class User {
         System.out.println("ID : " + id + " | PW : " + pw + " | Job : " + jobInfo);
     }
 
-    public static void signUp() {  // 회원가입
+    public static void signUp() {  // 회원가입 -> 공백도 계정생성되어 개선 : GPT 이용
         Scanner in = new Scanner(System.in);
+        String id;
         System.out.print("생성할 플레이어 아이디를 입력해주세요 : ");
-        String id = in.nextLine();
+        id = in.nextLine().trim(); // 양쪽 공백 제거
+        if(id.isEmpty()) {
+            System.out.println("아이디는 공백이 될 수 없습니다.");
+            return;
+        }
         for(User player : userManager.Users()) {
             if(player != null && player.getId().equals(id)) {
                 System.out.println("이미 존재하는 아이디 입니다.");
@@ -69,8 +82,13 @@ public class User {
                 return;
             }
         }
+        String pw;
         System.out.print("비밀번호를 설정해주세요 : ");
-        String pw = in.nextLine();
+        pw = in.nextLine().trim(); // 양쪽 공백 제거
+        if(pw.isEmpty()) {
+            System.out.println("비밀번호는 공백이 될 수 없습니다.");
+            return;
+        }
         User user = new User(id, pw);
         userManager.addUser(user);
         System.out.println("계정 생성 완료!");
@@ -220,4 +238,31 @@ public class User {
         }
     }
 
+    public void addGold(int amount) {
+        this.gold += amount;
+    }
+
+    public boolean hasPurchased(int index) {
+        return itemPurchased[index];
+    }
+
+    public void setPurchased(int index) {
+        itemPurchased[index] = true;
+    }
+
+    public int getAtkItem() {
+        return atkItem;
+    }
+
+    public void setAtkItem(int index) {
+        myCharacter.setAtkItemIndex(index);
+    }
+
+    public int getDefItem() {
+        return defItem;
+    }
+
+    public void setDefItem(int index) {
+        myCharacter.setDefItemIndex(index);
+    }
 }
