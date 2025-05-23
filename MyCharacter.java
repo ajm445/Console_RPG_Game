@@ -3,6 +3,8 @@ public class MyCharacter {
     private int hp;
     private int atk;
     private int def;
+    private int atkItemIndex = -1; // -1이면 장착이 안된 상태
+    private int defItemIndex = -1;
 
     // 생성자
     public MyCharacter(String job, int hp, int atk, int def) {
@@ -22,11 +24,35 @@ public class MyCharacter {
     }
 
     public int getAtk() {
-        return atk;
+        int bonus = 0;
+        if(atkItemIndex != - 1) {
+            bonus = Item.getItems()[atkItemIndex].getAtk();
+        }
+        return atk + bonus;
     }
 
     public int getDef() {
-        return def;
+        int bonus = 0;
+        if(defItemIndex != - 1) {
+            bonus = Item.getItems()[defItemIndex].getDef();
+        }
+        return def + bonus;
+    }
+
+    public int getAtkItemIndex() {
+        return atkItemIndex;
+    }
+
+    public void setAtkItemIndex(int atkItemIndex) {
+        this.atkItemIndex = atkItemIndex;
+    }
+
+    public int getDefItemIndex() {
+        return defItemIndex;
+    }
+
+    public void setDefItemIndex(int defItemIndex) {
+        this.defItemIndex = defItemIndex;
     }
 
     // method
@@ -50,14 +76,6 @@ public class MyCharacter {
         //myCharacter.hp -= damage;
     }
 
-    public void plusAtk(int atk) {
-        this.atk += atk;
-    }
-
-    public void plusDef(int Def) {
-        this.def += def;
-    }
-
     public void characterInfo() {
         System.out.println("***********************************");
         System.out.println("직업 : " + job);
@@ -69,9 +87,9 @@ public class MyCharacter {
 
     public void state() {
         System.out.println("***********************************");
-        System.out.println("직업 : " + User.currentUser.getMyCharacter().getJob());
-        System.out.println("HP : " + User.currentUser.getMyCharacter().getHp());
-        System.out.println("공격력 : " + User.currentUser.getMyCharacter().getAtk());
-        System.out.println("방어력 : " + User.currentUser.getMyCharacter().getDef());
+        System.out.println("직업 : " + job);
+        System.out.println("HP : " + getHp());
+        System.out.println("공격력 : " + getAtk());
+        System.out.println("방어력 : " + getDef());
     }
 }
