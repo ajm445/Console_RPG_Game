@@ -52,7 +52,6 @@ public class Enemy {
         this.atk = atk;
     }
 
-
     // method
     public void enemiesInfo() {
         System.out.println("***********************************");
