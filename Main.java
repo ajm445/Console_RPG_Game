@@ -87,7 +87,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Stage.stage();
         System.out.println("    Welcome to Console RPG Game");
         mainMenu();
     }
