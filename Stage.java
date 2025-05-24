@@ -1,5 +1,5 @@
 public class Stage {
-    public void stage() {
+    public static void stage() {
         System.out.println("stage");
     }
 }
