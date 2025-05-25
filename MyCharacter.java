@@ -3,6 +3,7 @@ public class MyCharacter {
     private int hp;
     private int atk;
     private int def;
+    private int maxHp;
     private int atkItemIndex = -1; // -1이면 장착이 안된 상태
     private int defItemIndex = -1;
 
@@ -12,6 +13,7 @@ public class MyCharacter {
         this.hp = hp;
         this.atk = atk;
         this.def = def;
+        this.maxHp = hp;
     }
 
     // getter
@@ -57,23 +59,25 @@ public class MyCharacter {
 
     // method
     public static MyCharacter createWarrior() {
-        return new MyCharacter("전사",100,20,50);
+        return new MyCharacter("전사",100,20,30);
     }
 
     public static MyCharacter createThief() {
-        return new MyCharacter("도적",80,30,30);
+        return new MyCharacter("도적",80,30,10);
     }
 
     public static MyCharacter createMage() {
-        return new MyCharacter("마법사",50,40,20);
+        return new MyCharacter("마법사",50,50,0);
     }
 
     public void addHp(int heal) {
-        //myCharacter.hp += heal;
+        this.hp += heal;
+        if(hp > maxHp) hp = maxHp;
     }
 
     public void loseHp(int damage) {
-        //myCharacter.hp -= damage;
+        this.hp -= damage;
+        if(hp < 0) hp = 0;
     }
 
     public void characterInfo() {
@@ -91,5 +95,15 @@ public class MyCharacter {
         System.out.println("HP : " + getHp());
         System.out.println("공격력 : " + getAtk());
         System.out.println("방어력 : " + getDef());
+    }
+
+    public void attack(Enemy enemy) {
+        int damage = Math.max(1, this.getAtk() - enemy.getDef()); // 최소 1 데미지
+        System.out.println(job + "의 공격! " + enemy.getName() + "에게 " + damage + "의 피해!");
+        enemy.setHp(enemy.getHp() - damage);
+    }
+
+    public boolean isAlive() {
+        return hp > 0;
     }
 }

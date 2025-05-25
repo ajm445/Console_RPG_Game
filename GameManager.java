@@ -116,7 +116,8 @@ public class GameManager {
                         int check = Character.getNumericValue(ch);
                         switch (check) {
                             case 1 -> {
-                                System.out.println("스테이지 1번");
+                                // System.out.println("스테이지 1번");
+                                Stage.stage1();
                                 return;
                             }
                             case 2 -> {

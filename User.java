@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -238,8 +239,8 @@ public class User {
         }
     }
 
-    public void addGold(int amount) {
-        this.gold += amount;
+    public void addGold(int gold) {
+        this.gold += gold;
     }
 
     public boolean hasPurchased(int index) {
@@ -264,5 +265,20 @@ public class User {
 
     public void setDefItem(int index) {
         myCharacter.setDefItemIndex(index);
+    }
+
+    public void resetUserState() {  // GPT 이용
+        this.gold = 100;  // 초기 골드
+        Arrays.fill(itemPurchased, false);
+        this.atkItem = -1;
+        this.defItem = -1;
+        if (this.myCharacter != null) {
+            String job = this.myCharacter.getJob();
+            switch (job) {
+                case "전사" -> this.myCharacter = MyCharacter.createWarrior();
+                case "도적" -> this.myCharacter = MyCharacter.createThief();
+                case "마법사" -> this.myCharacter = MyCharacter.createMage();
+            }
+        }
     }
 }

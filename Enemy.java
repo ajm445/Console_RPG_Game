@@ -3,7 +3,7 @@ public class Enemy {
     private int hp;
     private int atk;
     private int def;
-    private static Enemy[] enemies = {
+    private static final Enemy[] enemies = {
             new Enemy("약해용",50,10,0), // 약한 적
             new Enemy("느려용",200,10,30), // 체력 많고 느린 적
             new Enemy("빨라용",50,50,20), // 체력 적고 빠른 적
@@ -61,5 +61,25 @@ public class Enemy {
 
     public static void showAllEnemies() {
         for (Enemy enemy : enemies) enemy.enemiesInfo();
+    }
+
+    public void attack(MyCharacter player) {
+        int damage = Math.max(1, this.getAtk() - player.getDef()); // 최소 1 데미지
+        System.out.println(name + "의 공격! " + player.getJob() + "에게 " + damage + "의 피해!");
+        player.loseHp(damage);
+    }
+
+    public boolean isAlive() {
+        return hp > 0;
+    }
+
+    public static Enemy getEnemyByIndex(int index) {
+        if (index >= 0 && index < enemies.length) {
+            // 복사본 반환 (원본 유지하고 싶다면)
+            Enemy e = enemies[index];
+            return new Enemy(e.getName(), e.getHp(), e.getAtk(), e.getDef());
+        } else {
+            return null;
+        }
     }
 }
