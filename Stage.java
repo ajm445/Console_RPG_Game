@@ -28,7 +28,6 @@ public class Stage {
         while (player.isAlive() && enemy.isAlive()) {
             System.out.println("\n--- 당신의 턴 ---");
             System.out.println("1. 공격");
-            System.out.print("선택: ");
             int input = getUserInput();
 
             if (input == 1) {
@@ -90,7 +89,6 @@ public class Stage {
             while (player.isAlive() && enemy.isAlive()) {
                 System.out.println("\n--- 당신의 턴 ---");
                 System.out.println("1. 공격");
-                System.out.print("선택: ");
                 int input = getUserInput();
 
                 if (input == 1) {
@@ -111,8 +109,11 @@ public class Stage {
                     System.out.println(player.getJob() + "이(가) 쓰러졌다...");
                     User.currentUser.returnUserState();
                     System.out.println("용에게 당했습니다...");
+                    // 사망 시에도 변경사항 저장
+                    UserManager.saveUser(User.currentUser);
+                    UserManager.saveCharacter(User.currentUser.getId(), player);
                     GameManager.GameStart();
-                    return;
+                    break;
                 }
 
                 System.out.println("\n[전투 상태]");
@@ -126,7 +127,8 @@ public class Stage {
         User.currentUser.addGold(40);
         System.out.println("40골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
 
-        // 골드 변경사항 저장
+        // 변경사항 저장
+        UserManager.saveCharacter(User.currentUser.getId(), player);
         UserManager.saveUser(User.currentUser);
         GameManager.GameStart();
     }
@@ -144,7 +146,6 @@ public class Stage {
             while (player.isAlive() && Objects.requireNonNull(enemy).isAlive()) {
                 System.out.println("\n--- 당신의 턴 ---");
                 System.out.println("1. 공격");
-                System.out.print("선택: ");
                 int input = getUserInput();
 
                 if (input == 1) {
@@ -166,6 +167,9 @@ public class Stage {
                     System.out.println(player.getJob() + "이(가) 쓰러졌다...");
                     User.currentUser.returnUserState();
                     System.out.println("용에게 당했습니다...");
+                    // 사망 시에도 변경사항 저장
+                    UserManager.saveUser(User.currentUser);
+                    UserManager.saveCharacter(User.currentUser.getId(), player);
                     GameManager.GameStart();
                     return;
                 }
@@ -181,7 +185,8 @@ public class Stage {
         User.currentUser.addGold(20);
         System.out.println("20골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
 
-        // 골드 변경사항 저장
+        // 변경사항 저장
+        UserManager.saveCharacter(User.currentUser.getId(), player);
         UserManager.saveUser(User.currentUser);
         GameManager.GameStart();
     }

@@ -259,7 +259,6 @@ public class User {
                 Enter number
                 """);
         System.out.print(">> ");
-        System.out.print(">> ");
         Scanner in = new Scanner(System.in);
         while(true) {
             try {
