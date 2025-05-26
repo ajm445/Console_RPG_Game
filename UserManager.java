@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class UserManager {
+public class UserManager {  // 파일 입출력 구현 : perplexity 이용
     private static final String DATA_DIR = "data";
     private ArrayList<User> users = new ArrayList<>();
 
