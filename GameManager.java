@@ -1,6 +1,5 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public class GameManager {
     static Scanner in = new Scanner(System.in);
@@ -33,6 +32,7 @@ public class GameManager {
 //            System.out.println("Success!!");
 //            gameStart = true;
 //        }
+
         System.out.print("""
                 ***********************************
                           Console RPG Game
@@ -45,34 +45,48 @@ public class GameManager {
                 Enter number
                 """);
         System.out.print(">> ");
+
         try {
             int choice = in.nextInt();
             in.nextLine();
+
             if(choice >= 1 && choice <= 3) {
-                MyCharacter selected = characters[choice - 1]; // GPT 이용
-                // characters[choice - 1].characterInfo(); // 구문이 너무 길어 GPT 이용
+                MyCharacter selected = characters[choice - 1];
                 selected.characterInfo();
                 System.out.print("이 직업을 선택하시겠습니까? (Y | N) : ");
+
                 try {
                     char check = in.next().charAt(0);
                     if(check == 'Y' || check == 'y') {
                         System.out.println(selected.getJob() + "를 선택하셨습니다.");
                         User.currentUser.setMyCharacter(selected);
+                        User.currentUser.setStoredAtkItem(-1);
+                        User.currentUser.setStoredDefItem(-1);
+
+                        // 캐릭터 생성 후 즉시 저장
+                        UserManager.saveCharacter(User.currentUser.getId(), selected);
+                        UserManager.saveUser(User.currentUser); // 유저 정보도 업데이트
+
                         if (!User.currentUser.hasCharacter()) {
                             GameManager.choiceJob();
                         } else {
                             GameManager.GameStart();
                         }
-                        GameManager.GameStart();
                     } else if(check == 'N' || check == 'n') {
-                        System.out.println("직업 선택를 취소했습니다.");
+                        System.out.println("직업 선택을 취소했습니다.");
                         in.nextLine();
                         GameManager.choiceJob();
+                    } else {
+                        System.out.println("잘못된 입력입니다.");
+                        GameManager.choiceJob();
                     }
-                    else System.out.println("잘못된 입력입니다."); GameManager.choiceJob();
                 } catch(InputMismatchException e) {
-                    System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
+                    System.out.println("잘못된 입력입니다! Y 또는 N만 입력해주세요!");
+                    GameManager.choiceJob();
                 }
+            } else {
+                System.out.println("1부터 3까지의 숫자만 입력해주세요!");
+                GameManager.choiceJob();
             }
         } catch (InputMismatchException e) {
             System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
@@ -107,6 +121,7 @@ public class GameManager {
                 Enter number
                 """);
         System.out.print(">> ");
+
         try { // 숫자와 문자 둘 다 입력 받기 : GPT 이용
             while(true) {
                 String input = in.nextLine();
@@ -116,7 +131,6 @@ public class GameManager {
                         int check = Character.getNumericValue(ch);
                         switch (check) {
                             case 1 -> {
-                                // System.out.println("스테이지 1번");
                                 Stage.stage1();
                                 return;
                             }
@@ -125,7 +139,7 @@ public class GameManager {
                                 return;
                             }
                             case 3 -> {
-                                System.out.println("스테이지 3번");
+                                Stage.stage3();
                                 return;
                             }
                             case 4 -> {
@@ -152,11 +166,7 @@ public class GameManager {
                                 System.out.println("스테이지 9번");
                                 return;
                             }
-                            case 10 -> {
-                                System.out.println("스테이지 10번");
-                                return;
-                            }
-                            default -> System.out.println("1부터 10까지의 숫자 하나만 입력해주세요!");
+                            default -> System.out.println("1부터 9까지의 숫자 하나만 입력해주세요!");
                         }
                     } else {
                         switch (ch) {
@@ -188,6 +198,11 @@ public class GameManager {
                             default -> System.out.println("다시 입력해주세요.");
                         }
                     }
+                } else if (input.equals("10")) {
+                    System.out.println("스테이지 10번");
+                    return;
+                } else {
+                    System.out.println("올바른 입력을 해주세요.");
                 }
             }
         } catch(InputMismatchException e) {

@@ -15,6 +15,16 @@ public class MyCharacter {
         this.def = def;
         this.maxHp = hp;
     }
+    // 중복 정의
+    public MyCharacter(String job, int hp, int atk, int def, int storedAtk, int storedDef) {
+        this.job = job;
+        this.hp = hp;
+        this.atk = atk;
+        this.def = def;
+        this.atkItemIndex = storedAtk;
+        this.defItemIndex = storedDef;
+        this.maxHp = hp;
+    }
 
     // getter
     public String getJob() {
@@ -40,6 +50,12 @@ public class MyCharacter {
         }
         return def + bonus;
     }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+
 
     public int getAtkItemIndex() {
         return atkItemIndex;
@@ -114,5 +130,9 @@ public class MyCharacter {
     public void fightState() {
         System.out.println("내 Hp : " + getHp());
         System.out.println("--------------");
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
     }
 }

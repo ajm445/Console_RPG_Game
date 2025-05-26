@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이용
+public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이용
     static Scanner in = new Scanner(System.in);
 
     public static void store() {
@@ -45,6 +45,7 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 """);
         System.out.print(">> ");
         String input = in.nextLine();
+
         if (input.equals("i")) {
             System.out.println("[무기 정보]");
             Item.showAllItems();
@@ -55,6 +56,7 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
             GameManager.GameStart();
             return;
         }
+
         try {
             int choice = Integer.parseInt(input);
             if(choice < 1 || choice > 16) {
@@ -62,6 +64,7 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 Store.store();
                 return;
             }
+
             Item selectedItem = Item.getItems()[choice - 1];
             int price = Item.getPrice(choice -1);
             boolean isAllowed = switch (job) {
@@ -72,16 +75,19 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
             };
             if (choice >= 10 && choice <= 13) isAllowed = true;
             if (choice >= 14) isAllowed = true; // 회복 아이템은 누구나 가능
+
             if (!isAllowed) {
                 System.out.println("해당 직업은 이 아이템을 사용할 수 없습니다.");
                 Store.store();
                 return;
             }
+
             if (User.currentUser.getGold() < price) {
                 System.out.println("골드가 부족합니다. 현재 골드: " + User.currentUser.getGold());
                 Store.store();
                 return;
             }
+
             if (choice <= 13) { // 공격/방어 아이템
                 if (User.currentUser.hasPurchased(choice - 1)) {
                     System.out.print("이미 구매한 아이템입니다. 교체하시겠습니까? (Y|N): ");
@@ -91,6 +97,7 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                         return;
                     }
                 }
+
                 User.currentUser.setPurchased(choice - 1);
                 User.currentUser.addGold(-price);
                 if(selectedItem.isWeapon()) {
@@ -102,12 +109,22 @@ public class Store {  // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 }
 
                 System.out.println("[" + choice + "번 아이템 구매 및 장착 완료]");
+
+                // 변경사항 저장
+                UserManager.saveUser(User.currentUser);
+                UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
+
             } else { // 회복 아이템
                 User.currentUser.addGold(-price);
                 User.currentUser.getMyCharacter().addHp(selectedItem.getHp());
                 System.out.println("체력 물약 사용! 체력 " + selectedItem.getHp() + " 회복됨.");
-            }
 
+                // 체력 변경사항 저장
+                UserManager.saveUser(User.currentUser);
+                UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
+            }
+            UserManager.saveUser(User.currentUser);
+            UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
             GameManager.GameStart();
         } catch (NumberFormatException e) {
             System.out.println("숫자 또는 i/b만 입력 가능합니다.");
