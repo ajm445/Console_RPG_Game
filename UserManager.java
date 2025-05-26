@@ -108,6 +108,7 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
             for (boolean b : purchased) {
                 writer.write(b + " ");
             }
+            // buf.close();
             writer.newLine();
         } catch (IOException e) {
             System.out.println("유저 저장 실패: " + e.getMessage());
