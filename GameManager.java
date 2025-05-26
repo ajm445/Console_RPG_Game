@@ -121,7 +121,7 @@ public class GameManager {
                                 return;
                             }
                             case 2 -> {
-                                System.out.println("스테이지 2번");
+                                Stage.stage2();
                                 return;
                             }
                             case 3 -> {

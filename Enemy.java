@@ -4,11 +4,11 @@ public class Enemy {
     private int atk;
     private int def;
     private static final Enemy[] enemies = {
-            new Enemy("약해용",50,10,0), // 약한 적
-            new Enemy("느려용",200,10,30), // 체력 많고 느린 적
-            new Enemy("빨라용",50,50,20), // 체력 적고 빠른 적
-            new Enemy("적당해용",100,30,50), // 벨런스 형 적
-            new Enemy("보스에용",1000,100,100) // 보스
+            new Enemy("약해용",50,10,0), // 약한 적 -> 골드 10
+            new Enemy("단단해용",150,30,0), // 체력 많은 적 -> 골드 30
+            new Enemy("나쌔용",100,50,0), // 공격력 높은 적 -> 골드 50
+            new Enemy("안아줘용",200,70,30), // 벨런스 형 적 -> 골드 100
+            new Enemy("보스에용",1000,250,100) // 보스 -> 골드 700
     };
 
     // 생성자

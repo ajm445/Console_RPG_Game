@@ -3,18 +3,18 @@ public class Item {
     private int atk;
     private int def;
     private int hp;
-    private static Item[] items = {
+    private static final Item[] items = {
             new Item("나무 막대기",10,0,0),
             new Item("철 검",30,0,0),
             new Item("대검",100,0,0),
             new Item("나무 단검",20,0,0),
             new Item("철 단검",40,0,0),
             new Item("특화 단검",100,0,0),
-            new Item("낡은 지팡이",30,0,0),
-            new Item("일반 지팡이",60,0,0),
+            new Item("낡은 지팡이",40,0,0),
+            new Item("일반 지팡이",70,0,0),
             new Item("고대 지팡이",120,0,0),
             new Item("고대 무기",200,0,0),
-            new Item("나무 갑옷",0,30,0),
+            new Item("나무 갑옷",0,20,0),
             new Item("철 갑옷",0,60,0),
             new Item("잔해 갑옷",0,100,0),
             new Item("고대 갑옷",0,200,0),
@@ -22,7 +22,7 @@ public class Item {
             new Item("큰 물약",0,0,100)
     };
 
-    private static int[] itemPrices = {  // GPT 이용
+    private static final int[] itemPrices = {  // GPT 이용
             100,500,1000, 100,500,1000, 100,500,10000,2000, // 0~9 공격
             200,500,1000,2000, // 10~13 방어
             50,150 // 14~15 회복

@@ -59,7 +59,7 @@ public class MyCharacter {
 
     // method
     public static MyCharacter createWarrior() {
-        return new MyCharacter("전사",100,20,30);
+        return new MyCharacter("전사",100,20,20);
     }
 
     public static MyCharacter createThief() {
@@ -67,7 +67,7 @@ public class MyCharacter {
     }
 
     public static MyCharacter createMage() {
-        return new MyCharacter("마법사",50,50,0);
+        return new MyCharacter("마법사",60,50,0);
     }
 
     public void addHp(int heal) {
@@ -105,5 +105,14 @@ public class MyCharacter {
 
     public boolean isAlive() {
         return hp > 0;
+    }
+
+    public void reHp() {
+        this.hp = this.maxHp;
+    }
+
+    public void fightState() {
+        System.out.println("내 Hp : " + getHp());
+        System.out.println("--------------");
     }
 }
