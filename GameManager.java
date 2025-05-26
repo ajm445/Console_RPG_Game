@@ -48,7 +48,7 @@ public class GameManager {
 
         try {
             int choice = in.nextInt();
-            in.nextLine();
+            // in.nextLine();
 
             if(choice >= 1 && choice <= 3) {
                 MyCharacter selected = characters[choice - 1];
@@ -203,6 +203,7 @@ public class GameManager {
                     return;
                 } else {
                     System.out.println("올바른 입력을 해주세요.");
+                    break;
                 }
             }
         } catch(InputMismatchException e) {

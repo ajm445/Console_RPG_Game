@@ -2,6 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -103,34 +107,42 @@ public class User {
         System.out.println("ID : " + id + " | PW : " + pw + " | Job : " + jobInfo);
     }
 
-    public static void signUp() { // 회원가입 -> 공백도 계정생성되어 개선 : GPT 이용
+    public static void signUp() { // 회원가입 -> 공백도 계정 생성되어 개선 : GPT 이용
         Scanner in = new Scanner(System.in);
-        String id;
         System.out.print("생성할 플레이어 아이디를 입력해주세요 : ");
-        id = in.nextLine().trim(); // 양쪽 공백 제거
-        if(id.isEmpty()) {
+        String id = in.nextLine().trim();
+
+        if (id.isEmpty()) {
             System.out.println("아이디는 공백이 될 수 없습니다.");
             return;
         }
 
-        for(User player : userManager.Users()) {
-            if(player != null && player.getId().equals(id)) {
-                System.out.println("이미 존재하는 아이디 입니다.");
-                Main.mainMenu();
+        // 메모리 중복 검사
+        for (User player : userManager.Users()) {
+            if (player != null && player.getId().equals(id)) {
+                System.out.println("이미 존재하는 아이디입니다. (메모리 중복)");
                 return;
             }
         }
 
-        String pw;
+        // 파일 중복 검사
+        Path userPath = Paths.get(UserManager.getDataDir(), "user_" + id + ".txt");
+        if (Files.exists(userPath, LinkOption.NOFOLLOW_LINKS)) {
+            System.out.println("이미 존재하는 아이디입니다. (파일 중복)");
+            return;
+        }
+
         System.out.print("비밀번호를 설정해주세요 : ");
-        pw = in.nextLine().trim(); // 양쪽 공백 제거
-        if(pw.isEmpty()) {
+        String pw = in.nextLine().trim();
+        if (pw.isEmpty()) {
             System.out.println("비밀번호는 공백이 될 수 없습니다.");
             return;
         }
 
+        // 유저 생성
         User newUser = new User(id, pw);
-        userManager.addUser(newUser);
+        userManager.addUser(newUser); // 저장 포함
+
         System.out.println("계정 생성 완료!");
     }
 

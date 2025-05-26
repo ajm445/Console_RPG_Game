@@ -1,5 +1,9 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class UserManager {  // 파일 입출력 구현 : perplexity 이용
     private static final String DATA_DIR = "data";
@@ -10,9 +14,27 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
         new File(DATA_DIR).mkdirs();
     }
 
+    public static String getDataDir() {
+        return DATA_DIR;
+    }
+
     public UserManager() {
         // 디렉토리 생성
         new File(DATA_DIR).mkdirs();
+        File[] userFiles = new File(DATA_DIR).listFiles((dir,name) ->
+                name.startsWith("user_") && name.endsWith(".txt"));
+
+        if(userFiles != null) {
+            for(File file : userFiles) {
+                String userId = file.getName()
+                        .replace("user_", "")
+                        .replace(".txt", "");
+
+                if(users.stream().noneMatch(u -> u.getId().equals(userId))) {
+                    users.add(new User(userId, ""));
+                }
+            }
+        }
     }
 
     public ArrayList<User> Users() {
@@ -27,12 +49,41 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
     }
 
     public void removeUser(User user) {
-        users.remove(user);
-        File userFile = new File(DATA_DIR + "/user_" + user.getId() + ".txt");
-        File charFile = new File(DATA_DIR + "/character_" + user.getId() + ".txt");
-        userFile.delete();
-        charFile.delete();
+        users.removeIf(u -> u.getId().equals(user.getId()));
+
+        // 현재 로그인된 유저라면 초기화
+        if (User.currentUser != null && User.currentUser.getId().equals(user.getId())) {
+            User.currentUser = null;
+        }
+
+        // 사용자 파일 삭제
+        Path userPath = Paths.get(DATA_DIR, "user_" + user.getId() + ".txt");
+        try {
+            Files.deleteIfExists(userPath);
+            System.out.println("사용자 파일 삭제 완료");
+        } catch (IOException e) {
+            System.err.println("사용자 파일 삭제 실패: " + e.getMessage());
+        }
+
+        // 캐릭터 디렉토리 삭제
+        Path charDir = Paths.get(DATA_DIR, "characters", user.getId());
+        try {
+            if (Files.exists(charDir)) {
+                Files.walk(charDir)
+                        .sorted(Comparator.reverseOrder())
+                        .forEach(p -> {
+                            try {
+                                Files.delete(p);
+                            } catch (IOException e) {
+                                System.err.println("파일 삭제 실패: " + p + " / " + e.getMessage());
+                            }
+                        });
+            }
+        } catch (IOException e) {
+            System.err.println("캐릭터 디렉토리 삭제 실패: " + e.getMessage());
+        }
     }
+
 
     public void showAllUsers() {
         for (User user : users) {
@@ -51,36 +102,53 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String storedId = reader.readLine();
             String storedPw = reader.readLine();
-            // 아이디와 비밀번호 검증
+            if (storedId == null || storedPw == null) throw new IOException("아이디 또는 비밀번호 누락");
+
             if (!storedId.equals(id) || !storedPw.equals(pw)) {
                 System.out.println("아이디 또는 비밀번호 불일치");
                 return null;
             }
 
-            // 사용자 객체 생성
             User user = new User(storedId, storedPw);
-            // 기타 필드 로드
-            user.setGold(Integer.parseInt(reader.readLine()));
 
-            // 캐릭터 로드 (한 번만)
+            String line;
+
+            // 골드
+            line = reader.readLine();
+            if (line == null) throw new IOException("골드 정보 누락");
+            user.setGold(Integer.parseInt(line));
+
+            // 캐릭터 로드
             MyCharacter character = loadCharacter(id);
             user.setMyCharacter(character);
 
-            // 아이템 인덱스와 구매 여부 로드
-            user.setStoredAtkItem(Integer.parseInt(reader.readLine()));
-            user.setStoredDefItem(Integer.parseInt(reader.readLine()));
-            String[] bools = reader.readLine().split(" ");
+            // 장착 아이템 인덱스
+            line = reader.readLine();
+            if (line == null) throw new IOException("공격 아이템 인덱스 누락");
+            user.setStoredAtkItem(Integer.parseInt(line));
+
+            line = reader.readLine();
+            if (line == null) throw new IOException("방어 아이템 인덱스 누락");
+            user.setStoredDefItem(Integer.parseInt(line));
+
+            // 구매 여부
+            line = reader.readLine();
+            if (line == null) throw new IOException("아이템 구매 정보 누락");
+            String[] bools = line.split(" ");
             boolean[] purchased = new boolean[bools.length];
             for (int i = 0; i < bools.length; i++) {
                 purchased[i] = Boolean.parseBoolean(bools[i]);
             }
             user.setItemPurchased(purchased);
+
             return user;
         } catch (IOException | NumberFormatException e) {
-            System.out.println("사용자 로드 실패: " + e.getMessage());
+            System.out.println("유저 불러오기 실패: " + e.getMessage());
             return null;
         }
     }
+
+
 
     // 사용자 저장
     public static void saveUser(User user) {
@@ -92,7 +160,8 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
             writer.newLine();
             writer.write(Integer.toString(user.getGold()));
             writer.newLine();
-            // 캐릭터가 있을 경우, 실제 캐릭터의 장착 인덱스를 저장
+
+            // 캐릭터가 없을 수도 있기 때문에 무조건 -1로라도 저장
             if (user.getMyCharacter() != null) {
                 writer.write(Integer.toString(user.getMyCharacter().getAtkItemIndex()));
                 writer.newLine();
@@ -104,16 +173,18 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
                 writer.write("-1");
                 writer.newLine();
             }
+
             boolean[] purchased = user.getItemPurchased();
             for (boolean b : purchased) {
                 writer.write(b + " ");
             }
-            // buf.close();
             writer.newLine();
+
         } catch (IOException e) {
             System.out.println("유저 저장 실패: " + e.getMessage());
         }
     }
+
 
 
     // 캐릭터 저장

@@ -88,7 +88,6 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("    Welcome to Console RPG Game");
-        //User.userManager.loadAllUsers();
         mainMenu();
     }
 }
