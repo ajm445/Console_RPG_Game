@@ -80,7 +80,7 @@ public class Main {
         }
     }
 
-    // ✅ 안전한 숫자 입력 유틸 함수
+    // 안전한 숫자 입력 유틸 함수
     private static int safeReadInt(Scanner in, String prompt) {
         while (true) {
             System.out.print(prompt);

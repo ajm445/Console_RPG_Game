@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class UserManager {
-    private static final UserManager instance = new UserManager(); // ✅ 싱글톤 인스턴스
+    private static final UserManager instance = new UserManager(); // 싱글톤 인스턴스
     private static final String DATA_DIR = "data";
     private ArrayList<User> users = new ArrayList<>();
 
-    public static UserManager getInstance() { // ✅ 접근자
+    public static UserManager getInstance() { // 접근자
         return instance;
     }
 
@@ -23,7 +23,7 @@ public class UserManager {
         return DATA_DIR;
     }
 
-    private UserManager() {  // ✅ 생성자 private
+    private UserManager() {  // 생성자 private
         File[] userFiles = new File(DATA_DIR).listFiles((dir, name) ->
                 name.startsWith("user_") && name.endsWith(".txt"));
 
