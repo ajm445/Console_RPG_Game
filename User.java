@@ -71,11 +71,6 @@ public class User {
 
     public boolean hasCharacter(){ return myCharacter != null; }
 
-    public void printInfo(){
-        String jobInfo = (myCharacter!=null)? myCharacter.getJob() : "없음";
-        System.out.println("ID : "+id+" | PW : "+pw+" | Job : "+jobInfo);
-    }
-
     // ──────────────────────── static 기능 ────────────────────────
     /** 회원가입 */
     public static void signUp(){
