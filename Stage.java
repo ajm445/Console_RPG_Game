@@ -57,6 +57,8 @@ public class Stage {
                 System.out.println(player.getJob() + "이(가) 쓰러졌다...");
                 User.currentUser.returnUserState();
                 System.out.println("용에게 당했습니다...");
+                User.currentUser.loseGold(70);
+                System.out.println("도망치다 돈을 잃었습니다...");
 
                 // 사망 시에도 변경사항 저장
                 UserManager.saveUser(User.currentUser);
@@ -109,6 +111,8 @@ public class Stage {
                     System.out.println(player.getJob() + "이(가) 쓰러졌다...");
                     User.currentUser.returnUserState();
                     System.out.println("용에게 당했습니다...");
+                    User.currentUser.loseGold(70);
+                    System.out.println("도망치다 돈을 잃었습니다...");
                     // 사망 시에도 변경사항 저장
                     UserManager.saveUser(User.currentUser);
                     UserManager.saveCharacter(User.currentUser.getId(), player);

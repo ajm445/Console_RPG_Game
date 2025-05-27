@@ -3,19 +3,19 @@ import java.util.Scanner;
 
 public class GameManager {
     static Scanner in = new Scanner(System.in);
-    // public static boolean gameStart = false;
+
     // 출력 천천히 나오게 하는 메서드 : 블로그 참조 -> https://okky.kr/questions/554033
-    public static void slowPrint(String message, long millisPerChar) {
-        for (int i = 0; i < message.length(); i++) {
-            System.out.print(message.charAt(i));
-            try {
-                Thread.sleep(millisPerChar);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public static void slowPrint(String message, long millisPerChar) {
+//        for (int i = 0; i < message.length(); i++) {
+//            System.out.print(message.charAt(i));
+//            try {
+//                Thread.sleep(millisPerChar);
+//            }
+//            catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     public static void choiceJob() {
         MyCharacter[] characters = {
@@ -23,15 +23,14 @@ public class GameManager {
                 MyCharacter.createThief(),
                 MyCharacter.createMage()
         };
+
 //        String loding = "Game Loding...\n" + "3\n" + "2\n" + "1\n";
 //        String Starting = "Game Starting...\n" + "3\n" + "2\n" + "1\n";
-//        if(!gameStart) {
-//            slowPrint(loding, 300);
-//            System.out.println("Success!!");
-//            slowPrint(Starting, 300);
-//            System.out.println("Success!!");
-//            gameStart = true;
-//        }
+//
+//        slowPrint(loding, 300);
+//        System.out.println("Success!!");
+//        slowPrint(Starting, 300);
+//        System.out.println("Success!!");
 
         System.out.print("""
                 ***********************************
@@ -44,53 +43,49 @@ public class GameManager {
                 ***********************************
                 Enter number
                 """);
-        System.out.print(">> ");
 
-        try {
-            int choice = in.nextInt();
-            // in.nextLine();
+        int choice = safeReadInt(in, ">> ");
 
-            if(choice >= 1 && choice <= 3) {
-                MyCharacter selected = characters[choice - 1];
-                selected.characterInfo();
-                System.out.print("이 직업을 선택하시겠습니까? (Y | N) : ");
+        if (choice >= 1 && choice <= 3) {
+            MyCharacter selected = characters[choice - 1];
+            selected.characterInfo();
 
-                try {
-                    char check = in.next().charAt(0);
-                    if(check == 'Y' || check == 'y') {
-                        System.out.println(selected.getJob() + "를 선택하셨습니다.");
-                        User.currentUser.setMyCharacter(selected);
-                        User.currentUser.setStoredAtkItem(-1);
-                        User.currentUser.setStoredDefItem(-1);
+            System.out.print("이 직업을 선택하시겠습니까? (Y | N) : ");
+            String input = in.next();
 
-                        // 캐릭터 생성 후 즉시 저장
-                        UserManager.saveCharacter(User.currentUser.getId(), selected);
-                        UserManager.saveUser(User.currentUser); // 유저 정보도 업데이트
+            if (input.length() > 0) {
+                char check = input.charAt(0);
 
-                        if (!User.currentUser.hasCharacter()) {
-                            GameManager.choiceJob();
-                        } else {
-                            GameManager.GameStart();
-                        }
-                    } else if(check == 'N' || check == 'n') {
-                        System.out.println("직업 선택을 취소했습니다.");
-                        in.nextLine();
-                        GameManager.choiceJob();
-                    } else {
-                        System.out.println("잘못된 입력입니다.");
-                        GameManager.choiceJob();
-                    }
-                } catch(InputMismatchException e) {
-                    System.out.println("잘못된 입력입니다! Y 또는 N만 입력해주세요!");
+                if (check == 'Y' || check == 'y') {
+                    System.out.println(selected.getJob() + "를 선택하셨습니다.");
+                    in.nextLine();
+
+                    // 아이템 슬롯 초기화 먼저
+                    User.currentUser.setStoredAtkItem(-1);
+                    User.currentUser.setStoredDefItem(-1);
+                    User.currentUser.setMyCharacter(selected);
+
+                    // 캐릭터와 유저 저장
+                    UserManager.saveCharacter(User.currentUser.getId(), selected);
+                    UserManager.saveUser(User.currentUser);
+
+                    // 바로 게임 시작
+                    GameManager.GameStart();
+                } else if (check == 'N' || check == 'n') {
+                    System.out.println("직업 선택을 취소했습니다.");
+                    in.nextLine(); // flush
+                    GameManager.choiceJob();
+                } else {
+                    System.out.println("잘못된 입력입니다.");
                     GameManager.choiceJob();
                 }
             } else {
-                System.out.println("1부터 3까지의 숫자만 입력해주세요!");
+                System.out.println("입력이 감지되지 않았습니다.");
                 GameManager.choiceJob();
             }
-        } catch (InputMismatchException e) {
-            System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
-            in.nextLine();
+
+        } else {
+            System.out.println("1부터 3까지의 숫자만 입력해주세요!");
             GameManager.choiceJob();
         }
     }
@@ -120,96 +115,62 @@ public class GameManager {
                 ***********************************
                 Enter number
                 """);
-        System.out.print(">> ");
 
-        try { // 숫자와 문자 둘 다 입력 받기 : GPT 이용
-            while(true) {
-                String input = in.nextLine();
-                if(input.length() == 1) {
-                    char ch = input.charAt(0);
-                    if(Character.isDigit(ch)) {
-                        int check = Character.getNumericValue(ch);
-                        switch (check) {
-                            case 1 -> {
-                                Stage.stage1();
-                                return;
-                            }
-                            case 2 -> {
-                                Stage.stage2();
-                                return;
-                            }
-                            case 3 -> {
-                                Stage.stage3();
-                                return;
-                            }
-                            case 4 -> {
-                                System.out.println("스테이지 4번");
-                                return;
-                            }
-                            case 5 -> {
-                                System.out.println("스테이지 5번");
-                                return;
-                            }
-                            case 6 -> {
-                                System.out.println("스테이지 6번");
-                                return;
-                            }
-                            case 7 -> {
-                                System.out.println("스테이지 7번");
-                                return;
-                            }
-                            case 8 -> {
-                                System.out.println("스테이지 8번");
-                                return;
-                            }
-                            case 9 -> {
-                                System.out.println("스테이지 9번");
-                                return;
-                            }
-                            default -> System.out.println("1부터 9까지의 숫자 하나만 입력해주세요!");
-                        }
-                    } else {
-                        switch (ch) {
-                            case 'c' -> {
-                                User.currentUser.getMyCharacter().state();
-                                GameManager.GameStart();
-                            }
-                            case 'e' -> {
-                                System.out.println("적 정보");
-                                Enemy.showAllEnemies();
-                                GameManager.GameStart();
-                                return;
-                            }
-                            case 's' -> {
-                                Store.store();
-                                return;
-                            }
-                            case 'l' -> {
-                                User.currentUser.setLogin(false);
-                                User.currentUser = null;
-                                System.out.println("로그아웃 되었습니다.");
-                                Main.mainMenu();
-                                return;
-                            }
-                            case 'x' -> {
-                                System.out.println("게임을 종료합니다.");
-                                System.exit(0);
-                            }
-                            default -> System.out.println("다시 입력해주세요.");
-                        }
-                    }
-                } else if (input.equals("10")) {
-                    System.out.println("스테이지 10번");
-                    return;
-                } else {
-                    System.out.println("올바른 입력을 해주세요.");
-                    break;
+        while (true) {
+            System.out.print(">> ");
+            String input = in.nextLine().trim(); // 공백 제거
+
+            if (input.matches("[1-9]")) {
+                int stageNum = Integer.parseInt(input);
+                switch (stageNum) {
+                    case 1 -> Stage.stage1();
+                    case 2 -> Stage.stage2();
+                    case 3 -> Stage.stage3();
+                    case 4 -> System.out.println("스테이지 4번");
+                    case 5 -> System.out.println("스테이지 5번");
+                    case 6 -> System.out.println("스테이지 6번");
+                    case 7 -> System.out.println("스테이지 7번");
+                    case 8 -> System.out.println("스테이지 8번");
+                    case 9 -> System.out.println("스테이지 9번");
                 }
+                return;
+            } else if (input.equals("10")) {
+                System.out.println("스테이지 10번");
+                return;
+            } else if (input.equals("c")) {
+                User.currentUser.getMyCharacter().state();
+                GameManager.GameStart();
+            } else if (input.equals("e")) {
+                System.out.println("적 정보");
+                Enemy.showAllEnemies();
+                GameManager.GameStart();
+            } else if (input.equals("s")) {
+                Store.store();
+            } else if (input.equals("l")) {
+                User.currentUser.setLogin(false);
+                User.currentUser = null;
+                System.out.println("로그아웃 되었습니다.");
+                Main.mainMenu();
+                return;
+            } else if (input.equals("x")) {
+                System.out.println("게임을 종료합니다.");
+                System.exit(0);
+            } else {
+                System.out.println("올바른 입력을 해주세요.");
             }
-        } catch(InputMismatchException e) {
-            System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
-            in.nextLine();
-            Main.mainMenu();
+        }
+    }
+
+    // ✅ 안전한 숫자 입력 유틸 함수
+    private static int safeReadInt(Scanner in, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return in.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
+                in.nextLine(); // flush
+            }
         }
     }
 }
