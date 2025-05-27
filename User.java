@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -137,7 +138,7 @@ public class User {
     /** 아이디 변경 */
     public static void modifyId(){
         Scanner in = new Scanner(System.in);
-        System.out.println("현재 아이디 : "+currentUser.getId());
+        System.out.println("현재 아이디 : " + currentUser.getId());
         System.out.print("바꿀 아이디를 입력하세요 : ");
         String newId = in.nextLine();
         System.out.print("비밀번호를 입력하세요 : ");
@@ -151,9 +152,13 @@ public class User {
             }
         }
 
-        if(Objects.equals(currentUser.getPw(), pw)){
-            currentUser.setId(newId);
-            UserManager.saveUser(currentUser);
+        if(Objects.equals(currentUser.getPw(), pw)) {
+            // 1. 기존 ID 기준으로 정확하게 제거
+            UserManager.getInstance().Users().removeIf(u -> u.getId().equals(currentUser.getId()));
+            // 2. 파일 이름 및 ID 수정
+            currentUser.idFileUpdate(newId);
+            // 3. 다시 리스트에 추가
+            UserManager.getInstance().Users().add(currentUser);
             System.out.println("아이디가 성공적으로 변경되었습니다.");
         }else{
             System.out.println("비밀번호가 맞지 않습니다.");
@@ -170,8 +175,7 @@ public class User {
         if(Objects.equals(currentUser.getPw(), pw)){
             System.out.print("바꿀 비밀번호를 입력하세요 : ");
             String newPw = in.nextLine();
-            currentUser.setPw(newPw);
-            UserManager.saveUser(currentUser);
+            currentUser.pwFileUpdate(newPw);
             System.out.println("비밀번호가 성공적으로 변경되었습니다.");
         }else{
             System.out.println("비밀번호가 맞지 않습니다.");
@@ -259,5 +263,39 @@ public class User {
         myCharacter.getAtk();
         myCharacter.getDef();
         myCharacter.reHp();
+    }
+
+    public void idFileUpdate(String newId) {
+        Path userOldPath = Paths.get("data/user_" + this.id + ".txt");
+        Path userNewPath = Paths.get("data/user_" + newId + ".txt");
+        Path charOldPath = Paths.get("data/character_" + this.id + ".txt");
+        Path charNewPath = Paths.get("data/character_" + newId + ".txt");
+
+        try {
+            if (Files.exists(userNewPath)) {
+                System.out.println("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.");
+                return;
+            }
+
+            // 파일명 먼저 변경 (유저, 캐릭터 둘 다)
+            if (Files.exists(userOldPath)) {
+                Files.move(userOldPath, userNewPath);
+            }
+            if (Files.exists(charOldPath)) {
+                Files.move(charOldPath, charNewPath);
+            }
+
+            // ID 변경 및 저장
+            this.id = newId;
+            UserManager.saveUser(this);
+
+        } catch (IOException e) {
+            System.out.println("아이디 변경 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    public void pwFileUpdate(String newPw) {
+        this.pw = newPw;
+        UserManager.saveUser(this);
     }
 }
