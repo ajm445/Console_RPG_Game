@@ -120,7 +120,7 @@ public class User {
         // 메모리 중복 검사
         for (User player : userManager.Users()) {
             if (player != null && player.getId().equals(id)) {
-                System.out.println("이미 존재하는 아이디입니다. (메모리 중복)");
+                System.out.println("이미 존재하는 아이디입니다."); // 메모리 중복
                 return;
             }
         }
@@ -128,7 +128,7 @@ public class User {
         // 파일 중복 검사
         Path userPath = Paths.get(UserManager.getDataDir(), "user_" + id + ".txt");
         if (Files.exists(userPath, LinkOption.NOFOLLOW_LINKS)) {
-            System.out.println("이미 존재하는 아이디입니다. (파일 중복)");
+            System.out.println("이미 존재하는 아이디입니다."); // 파일 중복
             return;
         }
 
@@ -229,26 +229,34 @@ public class User {
         System.out.print("정말로 탈퇴하겠습니까? (Y | N) : ");
         try {
             char check = in.next().charAt(0);
-            if(check == 'Y' || check == 'y') {
+            if (check == 'Y' || check == 'y') {
                 User user = currentUser;
+
+                // 로그인 해제 먼저 수행
+                user.setLogin(false);
+
+                // 메모리 및 파일에서 제거
                 userManager.removeUser(user);
+
                 System.out.println("계정이 탈퇴되었습니다.");
-                User.currentUser.setLogin(false);
+
+                // currentUser를 마지막에 null로 처리
+                currentUser = null;
+
                 Main.mainMenu();
-            }
-            else if(check == 'N' || check == 'n') {
+            } else if (check == 'N' || check == 'n') {
                 System.out.println("회원탈퇴를 취소했습니다.");
                 in.nextLine();
                 Main.mainMenu();
-            }
-            else {
+            } else {
                 System.out.println("잘못된 입력입니다.");
                 User.myPage();
             }
-        } catch(InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
         }
     }
+
 
     public static void myPage() { // 마이페이지 보기
         String id = User.currentUser.getId();

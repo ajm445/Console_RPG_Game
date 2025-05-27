@@ -60,7 +60,7 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
         Path userPath = Paths.get(DATA_DIR, "user_" + user.getId() + ".txt");
         try {
             Files.deleteIfExists(userPath);
-            System.out.println("사용자 파일 삭제 완료");
+            // System.out.println("사용자 파일 삭제 완료");
         } catch (IOException e) {
             System.err.println("사용자 파일 삭제 실패: " + e.getMessage());
         }
@@ -86,8 +86,23 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
 
 
     public void showAllUsers() {
-        for (User user : users) {
-            user.printInfo();
+        File folder = new File(DATA_DIR); // 경로에 맞게 DATA_DIR 사용
+        File[] files = folder.listFiles((dir, name) -> name.startsWith("user_") && name.endsWith(".txt"));
+
+        if (files == null || files.length == 0) {
+            System.out.println("저장된 유저가 없습니다.");
+            return;
+        }
+
+        for (File file : files) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String id = reader.readLine();
+                String pw = reader.readLine();
+                // String gold = reader.readLine();
+                System.out.println("아이디 : " + id + " | 비번 : " + pw);
+            } catch (IOException e) {
+                System.out.println(file.getName() + " 읽기 실패: " + e.getMessage());
+            }
         }
     }
 
@@ -95,7 +110,7 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
         String filePath = DATA_DIR + File.separator + "user_" + id + ".txt";
         File userFile = new File(filePath);
         if (!userFile.exists()) {
-            System.out.println("사용자 파일 없음: " + filePath);
+            // System.out.println("사용자 파일 없음: " + filePath);
             return null;
         }
 
@@ -105,7 +120,7 @@ public class UserManager {  // 파일 입출력 구현 : perplexity 이용
             if (storedId == null || storedPw == null) throw new IOException("아이디 또는 비밀번호 누락");
 
             if (!storedId.equals(id) || !storedPw.equals(pw)) {
-                System.out.println("아이디 또는 비밀번호 불일치");
+                // System.out.println("아이디 또는 비밀번호 불일치");
                 return null;
             }
 
