@@ -259,13 +259,15 @@ public class User {
         if(myCharacter!=null) myCharacter.setDefItemIndex(idx);
     }
 
-    public void returnUserState(){
+    public void returnUserState(){  // 죽었을 때 플레이어의 체력을 초기화하는 메소드
         myCharacter.getAtk();
         myCharacter.getDef();
         myCharacter.reHp();
     }
 
-    public void idFileUpdate(String newId) {
+    // ──────────────────────── 파일 입출력 관리 ────────────────────────
+
+    public void idFileUpdate(String newId) {  // 아이디 변경 후 파일 변경 메소드
         Path userOldPath = Paths.get("data/user_" + this.id + ".txt");
         Path userNewPath = Paths.get("data/user_" + newId + ".txt");
         Path charOldPath = Paths.get("data/character_" + this.id + ".txt");
@@ -294,7 +296,7 @@ public class User {
         }
     }
 
-    public void pwFileUpdate(String newPw) {
+    public void pwFileUpdate(String newPw) {  // 비밀번호 변경 후 파일 변경 메소드
         this.pw = newPw;
         UserManager.saveUser(this);
     }
