@@ -167,7 +167,7 @@ public class GameManager {
             System.out.print(prompt);
             try {
                 return in.nextInt();
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
                 in.nextLine(); // flush
             }

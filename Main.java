@@ -87,7 +87,7 @@ public class Main {
             String input = in.nextLine();
             try {
                 return Integer.parseInt(input);
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
             }
         }

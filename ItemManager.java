@@ -14,8 +14,8 @@ public class ItemManager {
             new Item("철 갑옷",0,60,0),
             new Item("잔해 갑옷",0,100,0),
             new Item("고대 갑옷",0,200,0),
-            new Item("작은 물약",0,0,50),
-            new Item("큰 물약",0,0,100)
+            new Item("작은 물약",0,0,30),
+            new Item("큰 물약",0,0,70)
     };
 
     private static final int[] itemPrices = {
