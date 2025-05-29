@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이용
+public class Store {
     static Scanner in = new Scanner(System.in);
 
     public static void store() {
@@ -14,7 +14,7 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                              * 뒤로가기(b)
                 ***********************************
                             [공격력 아이템]
-                            
+                        
                         1. 나무 막대기 : 100골드
                         2. 철검 : 500골드
                         3. 대검 : 1000골드
@@ -46,89 +46,25 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
         System.out.print(">> ");
         String input = in.nextLine();
 
-        if (input.equals("i")) {
-            System.out.println("[무기 정보]");
-            ItemManager.showAllItems();
-            Store.store();
-            return;
-        } else if (input.equals("b")) {
-            System.out.println("[뒤로가기]");
-            GameManager.GameStart();
-            return;
-        }
-
-        try {
-            int choice = Integer.parseInt(input);
-            if(choice < 1 || choice > 16) {
-                System.out.println("1부터 16까지의 번호만 입력 가능합니다.");
-                Store.store();
-                return;
+        switch (input) {
+            case "i" -> {
+                System.out.println("[무기 정보]");
+                ItemManager.showAllItems();
+                store();
             }
-
-            Item selectedItem = ItemManager.getItems()[choice - 1];
-            int price = ItemManager.getPrice(choice -1);
-            boolean isAllowed = switch (job) {
-                case "전사" -> choice >= 1 && choice <= 3;
-                case "도적" -> choice >= 4 && choice <= 6;
-                case "마법사" -> choice >= 7 && choice <= 9;
-                default -> false;
-            };
-            if (choice >= 10 && choice <= 13) isAllowed = true;
-            if (choice >= 14) isAllowed = true; // 회복 아이템은 누구나 가능
-
-            if (!isAllowed) {
-                System.out.println("해당 직업은 이 아이템을 사용할 수 없습니다.");
-                Store.store();
-                return;
+            case "b" -> {
+                System.out.println("[뒤로가기]");
+                GameManager.GameStart();
             }
-
-            if (User.currentUser.getGold() < price) {
-                System.out.println("골드가 부족합니다. 현재 골드: " + User.currentUser.getGold());
-                Store.store();
-                return;
-            }
-
-            if (choice <= 13) { // 공격/방어 아이템
-                if (User.currentUser.hasPurchased(choice - 1)) {
-                    System.out.print("이미 구매한 아이템입니다. 교체하시겠습니까? (Y|N): ");
-                    char confirm = in.next().charAt(0);
-                    if (confirm != 'Y' && confirm != 'y') {
-                        Store.store();
-                        return;
-                    }
+            default -> {
+                try {
+                    int choice = Integer.parseInt(input);
+                    StoreManager.purchase(choice, job); // 구매 로직 위임
+                } catch (NumberFormatException e) {
+                    System.out.println("숫자 또는 i/b만 입력 가능합니다.");
+                    store();
                 }
-
-                User.currentUser.setPurchased(choice - 1);
-                User.currentUser.loseGold(price);
-                if(selectedItem.isWeapon()) {
-                    User.currentUser.setAtkItem(choice - 1);
-                    System.out.println("공격 아이템 장착 완료!");
-                } else {
-                    User.currentUser.setDefItem(choice - 1);
-                    System.out.println("방어 아이템 장착 완료!");
-                }
-
-                System.out.println("[" + choice + "번 아이템 구매 및 장착 완료]");
-
-                // 변경사항 저장
-                UserManager.saveUser(User.currentUser);
-                UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
-
-            } else { // 회복 아이템
-                User.currentUser.loseGold(price);
-                User.currentUser.getMyCharacter().addHp(selectedItem.getHp());
-                System.out.println("체력 물약 사용! 체력 " + selectedItem.getHp() + " 회복됨.");
-
-                // 체력 변경사항 저장
-                UserManager.saveUser(User.currentUser);
-                UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
             }
-            UserManager.saveUser(User.currentUser);
-            UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
-            GameManager.GameStart();
-        } catch (NumberFormatException e) {
-            System.out.println("숫자 또는 i/b만 입력 가능합니다.");
-            Store.store();
         }
     }
 }
