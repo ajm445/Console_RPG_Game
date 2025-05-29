@@ -3,7 +3,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.InputMismatchException;
 import java.util.Objects;          // null-safe 비교용
 import java.util.Scanner;
 
@@ -220,9 +219,9 @@ public class User {
                 """);
 
         Scanner in = new Scanner(System.in);
-        while(true){
+        while(true) {
             int num = safeReadInt(in);
-            switch(num){
+            switch(num) {
                 case 1  -> { System.out.println("[아이디 변경]");  modifyId(); }
                 case 2  -> { System.out.println("[비밀번호 변경]"); modifyPw(); }
                 case 3  -> { System.out.println("[회원탈퇴]");     deleteId(); }
@@ -239,7 +238,9 @@ public class User {
 
     // ──────────────────────── 게임 내 재화/아이템 처리 ────────────────────────
     public void addGold(int g){ this.gold += g; }
-    public void loseGold(int g){ this.gold -= g; }
+    public void loseGold(int g) {
+        this.gold = Math.max(0, this.gold - g);
+    }
     public boolean hasPurchased(int idx){ return itemPurchased[idx]; }
     public void setPurchased(int idx){ itemPurchased[idx] = true; }
 

@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GameManager {
@@ -135,7 +134,7 @@ public class GameManager {
                 }
                 return;
             } else if (input.equals("10")) {
-                System.out.println("스테이지 10번");
+                Stage.stage10();
                 return;
             } else if (input.equals("c")) {
                 User.currentUser.getMyCharacter().state();

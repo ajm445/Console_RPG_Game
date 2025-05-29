@@ -110,24 +110,22 @@ public class MyCharacter {
     }
 
     public void state() {
-        Item weapon = ItemManager.getItems()[atkItemIndex];
-        Item armor = ItemManager.getItems()[defItemIndex];
         System.out.println("***********************************");
         System.out.println("직업 : " + job);
         System.out.println("HP : " + getHp());
-        System.out.println("공격력 : " + atk + "(+" + weapon.getAtk() + ")");
-        System.out.println("방어력 : " + def + "(+" + armor.getDef() + ")");
-        // 착용 무기 정보 출력
+
         if (atkItemIndex != -1) {
-            System.out.println("장착 무기 : " + weapon.getName() + " (공격력 +" + weapon.getAtk() + ")");
+            Item weapon = ItemManager.getItems()[atkItemIndex];
+            System.out.println("공격력 : " + atk + "(+" + weapon.getAtk() + ") | " + weapon.getName());
         } else {
-            System.out.println("장착 무기 : 없음");
+            System.out.println("공격력 : " + atk);
         }
-        // 착용 방어구 정보 출력
+
         if (defItemIndex != -1) {
-            System.out.println("장착 방어구 : " + armor.getName() + " (방어력 +" + armor.getDef() + ")");
+            Item armor = ItemManager.getItems()[defItemIndex];
+            System.out.println("방어력 : " + def + "(+" + armor.getDef() + ") | " + armor.getName());
         } else {
-            System.out.println("장착 방어구 : 없음");
+            System.out.println("방어력 : " + def);
         }
     }
 
