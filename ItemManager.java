@@ -5,7 +5,7 @@ public class ItemManager {
             new Item("대검",100,0,0),
             new Item("나무 단검",20,0,0),
             new Item("철 단검",40,0,0),
-            new Item("특화 단검",100,0,0),
+            new Item("특화 단검",110,0,0),
             new Item("낡은 지팡이",40,0,0),
             new Item("일반 지팡이",70,0,0),
             new Item("고대 지팡이",120,0,0),
