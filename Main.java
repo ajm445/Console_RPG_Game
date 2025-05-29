@@ -31,7 +31,7 @@ public class Main {
                 """);
             }
 
-            int check = safeReadInt(in, ">> ");
+            int check = safeReadInt(in);
 
             switch (check) {
                 case 0 -> {
@@ -81,14 +81,14 @@ public class Main {
     }
 
     // 안전한 숫자 입력 유틸 함수
-    private static int safeReadInt(Scanner in, String prompt) {
+    private static int safeReadInt(Scanner in) {
         while (true) {
-            System.out.print(prompt);
+            System.out.print(">> ");
+            String input = in.nextLine();
             try {
-                return in.nextInt();
+                return Integer.parseInt(input);
             } catch (InputMismatchException e) {
                 System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
-                in.nextLine(); // 버퍼 비우기
             }
         }
     }

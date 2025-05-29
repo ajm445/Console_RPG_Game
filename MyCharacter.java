@@ -55,7 +55,9 @@ public class MyCharacter {
         return maxHp;
     }
 
-
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
 
     public int getAtkItemIndex() {
         return atkItemIndex;
@@ -130,9 +132,5 @@ public class MyCharacter {
     public void fightState() {
         System.out.println("내 Hp : " + getHp());
         System.out.println("--------------");
-    }
-
-    public void setMaxHp(int maxHp) {
-        this.maxHp = maxHp;
     }
 }

@@ -58,13 +58,13 @@ public class User {
     // ──────────────────────── 유틸 메서드 ────────────────────────
     /** 숫자 입력을 안전하게 읽는 유틸 */
     private static int safeReadInt(Scanner in){
-        while(true){
+        while(true) {
             System.out.print(">> ");
-            try{
-                return in.nextInt();
-            }catch(InputMismatchException e){
+            String input = in.nextLine();
+            try {
+                return Integer.parseInt(input);
+            } catch (InputMismatchException e){
                 System.out.println("잘못된 입력입니다! 숫자만 입력해주세요!");
-                in.nextLine();    // 버퍼 비우기
             }
         }
     }
@@ -200,7 +200,7 @@ public class User {
     public static void myPage(){
         String id = currentUser.getId();
         int totalWidth = 34;
-        String idLine = "아이디 : "+id;
+        String idLine = "아이디 : " + id;
         int padding = (totalWidth - idLine.length())/2;
 
         System.out.print("""
