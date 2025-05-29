@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class MyCharacter {
     private String job;
     private int hp;
@@ -113,6 +115,21 @@ public class MyCharacter {
         System.out.println("HP : " + getHp());
         System.out.println("공격력 : " + getAtk());
         System.out.println("방어력 : " + getDef());
+        // 착용 무기 정보 출력
+        if (atkItemIndex != -1) {
+            Item weapon = ItemManager.getItems()[atkItemIndex];
+            System.out.println("장착 무기 : " + weapon.getName() + " (공격력 +" + weapon.getAtk() + ")");
+        } else {
+            System.out.println("장착 무기 : 없음");
+        }
+
+        // 착용 방어구 정보 출력
+        if (defItemIndex != -1) {
+            Item armor = ItemManager.getItems()[defItemIndex];
+            System.out.println("장착 방어구 : " + armor.getName() + " (방어력 +" + armor.getDef() + ")");
+        } else {
+            System.out.println("장착 방어구 : 없음");
+        }
     }
 
     public void attack(Enemy enemy) {

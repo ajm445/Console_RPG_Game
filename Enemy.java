@@ -1,22 +1,26 @@
+import java.util.Random;
+
 public class Enemy {
     private String name;
     private int hp;
     private int atk;
     private int def;
+    private int reward;
     private static final Enemy[] enemies = {
-            new Enemy("약해용",50,10,0), // 약한 적 -> 골드 10
-            new Enemy("단단해용",150,30,0), // 체력 많은 적 -> 골드 30
-            new Enemy("나쌔용",100,50,0), // 공격력 높은 적 -> 골드 50
-            new Enemy("안아줘용",200,70,30), // 벨런스 형 적 -> 골드 100
-            new Enemy("보스에용",1000,250,100) // 보스 -> 골드 700
+            new Enemy("약해용", 50, 10, 0, 10), // 기본 적
+            new Enemy("단단해용", 150, 30, 0, 30), // 체력 많은 적
+            new Enemy("나쌔용", 100, 50, 0, 50), // 공격력 높은 적
+            new Enemy("안아줘용", 200, 70, 30, 100), // 벨런스 형 적
+            new Enemy("보스에용", 1000, 250, 100, 700) // 보스
     };
 
     // 생성자
-    public Enemy(String name, int hp, int atk, int def) {
+    public Enemy(String name, int hp, int atk, int def, int reward) {
         this.name = name;
         this.hp = hp;
         this.atk = atk;
         this.def = def;
+        this.reward = reward;
     }
 
     // getter, setter
@@ -52,6 +56,14 @@ public class Enemy {
         this.atk = atk;
     }
 
+    public int getReward() {
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
     // method
     public void enemiesInfo() {
         System.out.println("***********************************");
@@ -77,9 +89,17 @@ public class Enemy {
         if (index >= 0 && index < enemies.length) {
             // 복사본 반환 (원본 유지하고 싶다면)
             Enemy e = enemies[index];
-            return new Enemy(e.getName(), e.getHp(), e.getAtk(), e.getDef());
+            return new Enemy(e.getName(), e.getHp(), e.getAtk(), e.getDef(), e.getReward());
         } else {
             return null;
         }
+    }
+
+    // 랜덤 적 생성 메서드
+    public static Enemy getRandomEnemy() {
+        Random rand = new Random();
+        int index = rand.nextInt(4);
+        Enemy e = enemies[index];
+        return new Enemy(e.getName(), e.getHp(), e.getAtk(), e.getDef(), e.getReward());
     }
 }

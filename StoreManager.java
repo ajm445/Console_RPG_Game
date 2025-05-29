@@ -61,7 +61,6 @@ public class StoreManager {
         // 상태 저장
         UserManager.saveUser(User.currentUser);
         UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
-
         GameManager.GameStart();
     }
 }
