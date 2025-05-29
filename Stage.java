@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Stage {
     public static boolean gameClear = false;
+    public static boolean[] stageClear = new boolean[10];
     static Scanner in = new Scanner(System.in);
 
     public static int getUserInput() {
@@ -81,7 +82,7 @@ public class Stage {
             int reward = Objects.requireNonNull(enemy).getReward();
             User.currentUser.addGold(reward);
             System.out.println(reward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
-            Stage.gameClear = true;
+            Stage.stageClear[1] = true;
         }
 
         // 저장 및 복귀
@@ -107,7 +108,7 @@ public class Stage {
         }
 
         System.out.println("모든 적을 처치했습니다!");
-        Stage.gameClear = true;
+        Stage.stageClear[2] = true;
         User.currentUser.addGold(totalReward);
         System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
 
@@ -130,7 +131,7 @@ public class Stage {
         }
 
         System.out.println("모든 적을 처치했습니다!");
-        Stage.gameClear = true;
+        Stage.stageClear[3] = true;
         User.currentUser.addGold(totalReward);
         System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
 
@@ -161,7 +162,7 @@ public class Stage {
         totalReward += Objects.requireNonNull(enemy).getReward();
 
         System.out.println("모든 적을 처치했습니다!");
-        Stage.gameClear = true;
+        Stage.stageClear[4] = true;
         User.currentUser.addGold(totalReward);
         System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
 
