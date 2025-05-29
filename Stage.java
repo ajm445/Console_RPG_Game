@@ -171,9 +171,9 @@ public class Stage {
         GameManager.GameStart();
     }
 
-    public static void stage10() {
+    public static void stage10() { // 보스에용 1
         MyCharacter player = User.currentUser.getMyCharacter();
-        Enemy enemy = Enemy.getEnemyByIndex(4);
+        Enemy enemy = Enemy.getEnemyByIndex(5);
         boolean auto = autoMode();
 
         System.out.println("스테이지 10 시작!");
