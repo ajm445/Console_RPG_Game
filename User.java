@@ -16,7 +16,7 @@ public class User {
     private int gold = 100;
     private int atkItem = -1;           // index 기반 장착 아이템
     private int defItem = -1;
-    private boolean[] itemPurchased = new boolean[Item.getItems().length];
+    private boolean[] itemPurchased = new boolean[ItemManager.getItems().length];
     private int storedAtkItem = -1;
     private int storedDefItem = -1;
 

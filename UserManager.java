@@ -203,9 +203,9 @@ public class UserManager {
             writer.newLine();
             writer.write(Integer.toString(c.getHp()));
             writer.newLine();
-            writer.write(Integer.toString(c.getAtk() - (c.getAtkItemIndex() != -1 ? Item.getItems()[c.getAtkItemIndex()].getAtk() : 0)));
+            writer.write(Integer.toString(c.getAtk() - (c.getAtkItemIndex() != -1 ? ItemManager.getItems()[c.getAtkItemIndex()].getAtk() : 0)));
             writer.newLine();
-            writer.write(Integer.toString(c.getDef() - (c.getDefItemIndex() != -1 ? Item.getItems()[c.getDefItemIndex()].getDef() : 0)));
+            writer.write(Integer.toString(c.getDef() - (c.getDefItemIndex() != -1 ? ItemManager.getItems()[c.getDefItemIndex()].getDef() : 0)));
             writer.newLine();
             writer.write(Integer.toString(c.getMaxHp()));
             writer.newLine();

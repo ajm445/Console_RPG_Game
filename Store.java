@@ -48,7 +48,7 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
 
         if (input.equals("i")) {
             System.out.println("[무기 정보]");
-            Item.showAllItems();
+            ItemManager.showAllItems();
             Store.store();
             return;
         } else if (input.equals("b")) {
@@ -65,8 +65,8 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 return;
             }
 
-            Item selectedItem = Item.getItems()[choice - 1];
-            int price = Item.getPrice(choice -1);
+            Item selectedItem = ItemManager.getItems()[choice - 1];
+            int price = ItemManager.getPrice(choice -1);
             boolean isAllowed = switch (job) {
                 case "전사" -> choice >= 1 && choice <= 3;
                 case "도적" -> choice >= 4 && choice <= 6;
@@ -99,7 +99,7 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 }
 
                 User.currentUser.setPurchased(choice - 1);
-                User.currentUser.addGold(-price);
+                User.currentUser.loseGold(price);
                 if(selectedItem.isWeapon()) {
                     User.currentUser.setAtkItem(choice - 1);
                     System.out.println("공격 아이템 장착 완료!");
@@ -115,7 +115,7 @@ public class Store { // 직업별 무기 선택 가능 유무 구현 : GPT 이�
                 UserManager.saveCharacter(User.currentUser.getId(), User.currentUser.getMyCharacter());
 
             } else { // 회복 아이템
-                User.currentUser.addGold(-price);
+                User.currentUser.loseGold(price);
                 User.currentUser.getMyCharacter().addHp(selectedItem.getHp());
                 System.out.println("체력 물약 사용! 체력 " + selectedItem.getHp() + " 회복됨.");
 

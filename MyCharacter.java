@@ -38,7 +38,7 @@ public class MyCharacter {
     public int getAtk() {
         int bonus = 0;
         if(atkItemIndex != - 1) {
-            bonus = Item.getItems()[atkItemIndex].getAtk();
+            bonus = ItemManager.getItems()[atkItemIndex].getAtk();
         }
         return atk + bonus;
     }
@@ -46,7 +46,7 @@ public class MyCharacter {
     public int getDef() {
         int bonus = 0;
         if(defItemIndex != - 1) {
-            bonus = Item.getItems()[defItemIndex].getDef();
+            bonus = ItemManager.getItems()[defItemIndex].getDef();
         }
         return def + bonus;
     }
