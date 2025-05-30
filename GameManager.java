@@ -4,17 +4,17 @@ public class GameManager {
     static Scanner in = new Scanner(System.in);
 
     // 출력 천천히 나오게 하는 메서드 : 블로그 참조 -> https://okky.kr/questions/554033
-//    public static void slowPrint(String message, long millisPerChar) {
-//        for (int i = 0; i < message.length(); i++) {
-//            System.out.print(message.charAt(i));
-//            try {
-//                Thread.sleep(millisPerChar);
-//            }
-//            catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public static void slowPrint(String message, long millisPerChar) {
+        for (int i = 0; i < message.length(); i++) {
+            System.out.print(message.charAt(i));
+            try {
+                Thread.sleep(millisPerChar);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void choiceJob() {
         MyCharacter[] characters = {
@@ -23,13 +23,13 @@ public class GameManager {
                 MyCharacter.createMage()
         };
 
-//        String loding = "Game Loding...\n" + "3\n" + "2\n" + "1\n";
-//        String Starting = "Game Starting...\n" + "3\n" + "2\n" + "1\n";
-//
-//        slowPrint(loding, 300);
-//        System.out.println("Success!!");
-//        slowPrint(Starting, 300);
-//        System.out.println("Success!!");
+        String loding = "Game Loding...\n" + "3\n" + "2\n" + "1\n";
+        String Starting = "Game Starting...\n" + "3\n" + "2\n" + "1\n";
+
+        slowPrint(loding, 300);
+        System.out.println("Success!!");
+        slowPrint(Starting, 300);
+        System.out.println("Success!!");
 
         System.out.print("""
                 ***********************************
