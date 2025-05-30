@@ -47,8 +47,17 @@ public class StoreManager {
                 User.currentUser.setAtkItem(choice - 1);
                 System.out.println("공격 아이템 장착 완료!");
             } else {
+                MyCharacter ch = User.currentUser.getMyCharacter();
                 User.currentUser.setDefItem(choice - 1);
+                ch.setMaxHp(ch.getBaseMaxHp());
+                if(ch.getHp() > ch.getMaxHp()) {
+                    ch.loseHp(ch.getHp() - ch.getMaxHp());
+                }
                 System.out.println("방어 아이템 장착 완료!");
+                if (selectedItem.getName().equals("고대 갑옷")) {
+                    ch.setMaxHp(ch.getBaseMaxHp() + 100);
+                    System.out.println("고대 갑옷 착용! 최대 체력이 100 증가합니다.");
+                }
             }
 
             System.out.println("[" + choice + "번 아이템 구매 및 장착 완료]");

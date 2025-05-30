@@ -8,6 +8,7 @@ public class MyCharacter {
     private int maxHp;
     private int atkItemIndex = -1; // -1이면 장착이 안된 상태
     private int defItemIndex = -1;
+    private int baseMaxHp; // 기본 최대 체력
 
     // 생성자
     public MyCharacter(String job, int hp, int atk, int def) {
@@ -16,6 +17,7 @@ public class MyCharacter {
         this.atk = atk;
         this.def = def;
         this.maxHp = hp;
+        this.baseMaxHp = hp;
     }
     // 중복 정의
     public MyCharacter(String job, int hp, int atk, int def, int storedAtk, int storedDef) {
@@ -26,6 +28,7 @@ public class MyCharacter {
         this.atkItemIndex = storedAtk;
         this.defItemIndex = storedDef;
         this.maxHp = hp;
+        this.baseMaxHp = hp;
     }
 
     // getter
@@ -59,6 +62,14 @@ public class MyCharacter {
 
     public void setMaxHp(int maxHp) {
         this.maxHp = maxHp;
+    }
+
+    public int getBaseMaxHp() {
+        return baseMaxHp;
+    }
+
+    public void setBaseMaxHp(int baseMaxHp) {
+        this.baseMaxHp = baseMaxHp;
     }
 
     public int getAtkItemIndex() {
@@ -112,7 +123,7 @@ public class MyCharacter {
     public void state() {
         System.out.println("***********************************");
         System.out.println("직업 : " + job);
-        System.out.println("HP : " + getHp());
+        System.out.println("HP : " + getHp() + " | " + getMaxHp());
 
         if (atkItemIndex != -1) {
             Item weapon = ItemManager.getItems()[atkItemIndex];

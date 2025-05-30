@@ -222,6 +222,8 @@ public class UserManager {
             writer.newLine();
             writer.write(Integer.toString(c.getDef() - (c.getDefItemIndex() != -1 ? ItemManager.getItems()[c.getDefItemIndex()].getDef() : 0)));
             writer.newLine();
+            writer.write(Integer.toString(c.getBaseMaxHp()));
+            writer.newLine();
             writer.write(Integer.toString(c.getMaxHp()));
             writer.newLine();
             writer.write(Integer.toString(c.getAtkItemIndex()));
@@ -246,11 +248,13 @@ public class UserManager {
             int hp = Integer.parseInt(reader.readLine());
             int atk = Integer.parseInt(reader.readLine());
             int def = Integer.parseInt(reader.readLine());
+            int baseMaxHp = Integer.parseInt(reader.readLine());
             int maxHp = Integer.parseInt(reader.readLine());
             int atkItemIdx = Integer.parseInt(reader.readLine());
             int defItemIdx = Integer.parseInt(reader.readLine());
 
             MyCharacter c = new MyCharacter(job, hp, atk, def);
+            c.setBaseMaxHp(baseMaxHp);
             c.setMaxHp(maxHp);
             c.setAtkItemIndex(atkItemIdx);
             c.setDefItemIndex(defItemIdx);
