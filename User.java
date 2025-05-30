@@ -193,8 +193,12 @@ public class User {
         char check = in.next().charAt(0);
 
         if (check == 'Y' || check == 'y') {
-            UserManager.getInstance().removeUser(currentUser);
-            User.login = false;
+            // 메모리에서 삭제
+            UserManager.getInstance().Users().removeIf(u -> u.getId().equals(currentUser.getId()));
+            // 파일 삭제
+            UserManager.getInstance().removeUser(currentUser); // 파일 삭제는 이 메소드에서 처리된다고 가정
+            // 상태 초기화
+            login = false;
             currentUser = null;
             System.out.println("계정이 탈퇴되었습니다.");
         } else if (check == 'N' || check == 'n') {
