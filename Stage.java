@@ -3,7 +3,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Stage {
-    // private static boolean gameClear = false;
     public static boolean[] stageClear = new boolean[10];
     static Scanner in = new Scanner(System.in);
 
@@ -12,11 +11,11 @@ public class Stage {
             System.out.print("선택: ");
             try {
                 int input = in.nextInt();
-                in.nextLine(); // 입력 버퍼 비우기
+                in.nextLine();
                 return input;
             } catch (InputMismatchException e) {
                 System.out.println("숫자를 입력하세요!");
-                in.nextLine(); // 잘못된 입력 버퍼 비우기
+                in.nextLine();
             }
         }
     }
@@ -69,13 +68,12 @@ public class Stage {
             player.fightState();
             System.out.println("적 HP : " + enemy.getHp());
 
-            // 상태 저장
             UserManager.saveCharacter(User.currentUser.getId(), player);
         }
-        return true; // 적 처치 성공
+        return true;
     }
 
-    public static void stage1() { // 약해용 1
+    public static void stage1() {
         MyCharacter player = User.currentUser.getMyCharacter();
         Enemy enemy = Enemy.getEnemyByIndex(0);
         boolean auto = autoMode(0);
@@ -90,18 +88,17 @@ public class Stage {
             Stage.stageClear[0] = true;
         }
 
-        // 저장 및 복귀
-        User.currentUser.setStageClear(Stage.stageClear); // 스테이지 클리어 정보 저장
+        User.currentUser.setStageClear(Stage.stageClear);
         UserManager.saveUser(User.currentUser);
         UserManager.saveCharacter(User.currentUser.getId(), player);
         GameManager.GameStart();
     }
 
-    public static void stage2() { // 약해용 1, 단단해용 1
+    public static void stage2() {
         MyCharacter player = User.currentUser.getMyCharacter();
         Enemy[] enemies = {
-                Enemy.getEnemyByIndex(0), // 약해용
-                Enemy.getEnemyByIndex(1)  // 단단해용
+                Enemy.getEnemyByIndex(0),
+                Enemy.getEnemyByIndex(1)
         };
         int totalReward = 0;
         boolean auto = autoMode(1);
@@ -109,7 +106,7 @@ public class Stage {
             System.out.println("\n스테이지 2 시작!");
             for (Enemy enemy : enemies) {
                 boolean success = fight(enemy, player, auto,50);
-                if (!success) return; // 전투 실패 (플레이어 사망)
+                if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
             }
 
@@ -127,7 +124,7 @@ public class Stage {
         }
     }
 
-    public static void stage3() { // 단단해용 2, 나쌔용
+    public static void stage3() {
         if(Stage.stageClear[1]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             int totalReward = 0;
@@ -135,16 +132,14 @@ public class Stage {
 
             System.out.println("\n스테이지 3 시작!");
 
-            // 단단해용 2마리
             for (int i = 0; i < 2; i++) {
-                Enemy enemy = Enemy.getEnemyByIndex(1); // 단단해용
+                Enemy enemy = Enemy.getEnemyByIndex(1);
                 boolean success = fight(enemy, player, auto, 80);
                 if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
             }
 
-            // 나쌔용 1마리
-            Enemy enemy = Enemy.getEnemyByIndex(2); // 나쌔용
+            Enemy enemy = Enemy.getEnemyByIndex(2);
             boolean success = fight(enemy, player, auto, 90);
             if (!success) return;
             totalReward += Objects.requireNonNull(enemy).getReward();
@@ -163,7 +158,7 @@ public class Stage {
         }
     }
 
-    public static void stage4() { // 나쌔용 1, 단단해용 1, 나쌔용 1, 단단해용 1
+    public static void stage4() {
         if(Stage.stageClear[2]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             boolean auto = autoMode(3);
@@ -171,19 +166,19 @@ public class Stage {
 
             System.out.println("\n스테이지 4 시작!");
 
-            Enemy enemy1 = Enemy.getEnemyByIndex(2); // 나쌔용
+            Enemy enemy1 = Enemy.getEnemyByIndex(2);
             if (!fight(enemy1, player, auto, 85)) return;
             totalReward += Objects.requireNonNull(enemy1).getReward();
 
-            Enemy enemy2 = Enemy.getEnemyByIndex(1); // 단단해용
+            Enemy enemy2 = Enemy.getEnemyByIndex(1);
             if (!fight(enemy2, player, auto, 85)) return;
             totalReward += Objects.requireNonNull(enemy2).getReward();
 
-            Enemy enemy3 = Enemy.getEnemyByIndex(2); // 나쌔용
+            Enemy enemy3 = Enemy.getEnemyByIndex(2);
             if (!fight(enemy3, player, auto, 85)) return;
             totalReward += Objects.requireNonNull(enemy3).getReward();
 
-            Enemy enemy4 = Enemy.getEnemyByIndex(1); // 단단해용
+            Enemy enemy4 = Enemy.getEnemyByIndex(1);
             if (!fight(enemy4, player, auto, 85)) return;
             totalReward += Objects.requireNonNull(enemy4).getReward();
 
@@ -201,13 +196,12 @@ public class Stage {
         }
     }
 
-
-    public static void stage5() { // 단단해용 1, 나쌔용 1, 화나용 1
+    public static void stage5() {
         MyCharacter player = User.currentUser.getMyCharacter();
         Enemy[] enemies = {
-                Enemy.getEnemyByIndex(1), // 단단해용
-                Enemy.getEnemyByIndex(2),  // 나쌔용
-                Enemy.getEnemyByIndex(3) // 화나용
+                Enemy.getEnemyByIndex(1),
+                Enemy.getEnemyByIndex(2),
+                Enemy.getEnemyByIndex(3)
         };
         int totalReward = 0;
         boolean auto = autoMode(4);
@@ -215,7 +209,7 @@ public class Stage {
             System.out.println("\n스테이지 5 시작!");
             for (Enemy enemy : enemies) {
                 boolean success = fight(enemy, player, auto,200);
-                if (!success) return; // 전투 실패 (플레이어 사망)
+                if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
             }
 
@@ -233,7 +227,7 @@ public class Stage {
         }
     }
 
-    public static void stage6() { // 화나용 2
+    public static void stage6() {
         if(Stage.stageClear[4]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             int totalReward = 0;
@@ -241,9 +235,8 @@ public class Stage {
 
             System.out.println("\n스테이지 6 시작!");
 
-            // 화나용 2마리
             for (int i = 0; i < 2; i++) {
-                Enemy enemy = Enemy.getEnemyByIndex(3); // 화나용
+                Enemy enemy = Enemy.getEnemyByIndex(3);
                 boolean success = fight(enemy, player, auto, 250);
                 if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
@@ -263,7 +256,7 @@ public class Stage {
         }
     }
 
-    public static void stage7() { // 화나용 2, 안아줘용 1
+    public static void stage7() {
         if(Stage.stageClear[5]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             int totalReward = 0;
@@ -271,16 +264,14 @@ public class Stage {
 
             System.out.println("\n스테이지 7 시작!");
 
-            // 단단해용 2마리
             for (int i = 0; i < 2; i++) {
-                Enemy enemy = Enemy.getEnemyByIndex(3); // 화나용
+                Enemy enemy = Enemy.getEnemyByIndex(3);
                 boolean success = fight(enemy, player, auto, 250);
                 if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
             }
 
-            // 안아줘용 1마리
-            Enemy enemy = Enemy.getEnemyByIndex(4); // 안아줘용
+            Enemy enemy = Enemy.getEnemyByIndex(4);
             boolean success = fight(enemy, player, auto, 500);
             if (!success) return;
             totalReward += Objects.requireNonNull(enemy).getReward();
@@ -299,7 +290,7 @@ public class Stage {
         }
     }
 
-    public static void stage8() { // 안아줘용 2
+    public static void stage8() {
         if(Stage.stageClear[6]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             int totalReward = 0;
@@ -307,9 +298,8 @@ public class Stage {
 
             System.out.println("\n스테이지 8 시작!");
 
-            // 안아줘용 2마리
             for (int i = 0; i < 2; i++) {
-                Enemy enemy = Enemy.getEnemyByIndex(4); // 안아줘용
+                Enemy enemy = Enemy.getEnemyByIndex(4);
                 boolean success = fight(enemy, player, auto, 800);
                 if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
@@ -328,25 +318,26 @@ public class Stage {
             GameManager.GameStart();
         }
     }
-    public static void stage9() { // 약해용 1, 단단해용 1, 나쌔용 1, 화나용 2, 안아줘용 3
+
+    public static void stage9() {
         MyCharacter player = User.currentUser.getMyCharacter();
         Enemy[] enemies = {
-                Enemy.getEnemyByIndex(0), // 약해용
-                Enemy.getEnemyByIndex(1), // 단단해용
-                Enemy.getEnemyByIndex(2),  // 나쌔용
-                Enemy.getEnemyByIndex(3), // 화나용
-                Enemy.getEnemyByIndex(3), // 화나용
-                Enemy.getEnemyByIndex(4), // 안아줘용
-                Enemy.getEnemyByIndex(4), // 안아줘용
-                Enemy.getEnemyByIndex(4) // 안아줘용
+                Enemy.getEnemyByIndex(0),
+                Enemy.getEnemyByIndex(1),
+                Enemy.getEnemyByIndex(2),
+                Enemy.getEnemyByIndex(3),
+                Enemy.getEnemyByIndex(3),
+                Enemy.getEnemyByIndex(4),
+                Enemy.getEnemyByIndex(4),
+                Enemy.getEnemyByIndex(4)
         };
         int totalReward = 0;
         boolean auto = autoMode(8);
         if(Stage.stageClear[7]) {
-            System.out.println("\n스테이지 5 시작!");
+            System.out.println("\n스테이지 9 시작!");
             for (Enemy enemy : enemies) {
                 boolean success = fight(enemy, player, auto,1200);
-                if (!success) return; // 전투 실패 (플레이어 사망)
+                if (!success) return;
                 totalReward += Objects.requireNonNull(enemy).getReward();
             }
 
@@ -364,7 +355,7 @@ public class Stage {
         }
     }
 
-    public static void stage10() { // 보스에용 1
+    public static void stage10() {
         if (Stage.stageClear[8]) {
             MyCharacter player = User.currentUser.getMyCharacter();
             Enemy enemy = Enemy.getEnemyByIndex(5);
@@ -378,10 +369,8 @@ public class Stage {
                 int reward = Objects.requireNonNull(enemy).getReward();
                 User.currentUser.addGold(reward);
                 System.out.println(reward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
-                // Stage.gameClear = true;
             }
 
-            // 저장 및 복귀
             UserManager.saveUser(User.currentUser);
             UserManager.saveCharacter(User.currentUser.getId(), player);
             GameManager.GameStart();

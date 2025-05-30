@@ -6,24 +6,28 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class UserManager {
-    private static final UserManager instance = new UserManager(); // 싱글톤 인스턴스
-    private static final String DATA_DIR = "data";
-    private ArrayList<User> users = new ArrayList<>();
+    // 싱글톤 인스턴스 생성
+    private static final UserManager instance = new UserManager();
+    private static final String DATA_DIR = "data"; // 데이터 디렉토리 경로
+    private ArrayList<User> users = new ArrayList<>(); // 사용자 목록
 
-    public static UserManager getInstance() { // 접근자
+    // 싱글톤 접근자
+    public static UserManager getInstance() {
         return instance;
     }
 
-    // 디렉토리 생성
+    // 클래스 로딩 시 디렉토리 생성
     static {
         new File(DATA_DIR).mkdirs();
     }
 
+    // 데이터 디렉토리 경로 반환
     public static String getDataDir() {
         return DATA_DIR;
     }
 
-    private UserManager() {  // 생성자 private
+    // 생성자: 기존 사용자 파일 읽어 초기 사용자 목록 구성
+    private UserManager() {
         File[] userFiles = new File(DATA_DIR).listFiles((dir, name) ->
                 name.startsWith("user_") && name.endsWith(".txt"));
 
@@ -40,22 +44,27 @@ public class UserManager {
         }
     }
 
+    // 사용자 리스트 반환
     public ArrayList<User> Users() {
         return users;
     }
 
+    // 사용자 추가 및 저장
     public void addUser(User user) {
         users.add(user);
         saveUser(user);
     }
 
+    // 사용자 삭제
     public void removeUser(User user) {
         users.removeIf(u -> u.getId().equals(user.getId()));
 
+        // 현재 사용자 초기화
         if (User.currentUser != null && User.currentUser.getId().equals(user.getId())) {
             User.currentUser = null;
         }
 
+        // 사용자 파일 삭제
         Path userPath = Paths.get(DATA_DIR, "user_" + user.getId() + ".txt");
         try {
             Files.deleteIfExists(userPath);
@@ -63,7 +72,7 @@ public class UserManager {
             System.err.println("사용자 파일 삭제 실패: " + e.getMessage());
         }
 
-        // 캐릭터 txt 파일 삭제
+        // 캐릭터 파일 삭제
         Path charFilePath = Paths.get(DATA_DIR, "character_" + user.getId() + ".txt");
         try {
             Files.deleteIfExists(charFilePath);
@@ -71,7 +80,7 @@ public class UserManager {
             System.err.println("캐릭터 파일 삭제 실패: " + e.getMessage());
         }
 
-        // (기존 구조 유지) 캐릭터 디렉토리 삭제 - 추후 사용 대비
+        // 캐릭터 디렉토리 삭제 (추후 구조 대비)
         Path charDir = Paths.get(DATA_DIR, "characters", user.getId());
         try {
             if (Files.exists(charDir)) {
@@ -90,7 +99,7 @@ public class UserManager {
         }
     }
 
-
+    // 저장된 모든 사용자 정보 출력
     public void showAllUsers() {
         File folder = new File(DATA_DIR);
         File[] files = folder.listFiles((dir, name) -> name.startsWith("user_") && name.endsWith(".txt"));
@@ -111,6 +120,7 @@ public class UserManager {
         }
     }
 
+    // 사용자 로딩 메서드
     public static User loadUser(String id, String pw) {
         String filePath = DATA_DIR + File.separator + "user_" + id + ".txt";
         File userFile = new File(filePath);
@@ -172,6 +182,7 @@ public class UserManager {
         }
     }
 
+    // 사용자 정보 저장
     public static void saveUser(User user) {
         String filePath = DATA_DIR + "/user_" + user.getId() + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -193,15 +204,13 @@ public class UserManager {
                 writer.write("-1");
                 writer.newLine();
             }
-            // 아이템 구매 여부 정보 저장
-            boolean[] purchased = user.getItemPurchased();
-            for (boolean b : purchased) {
+
+            for (boolean b : user.getItemPurchased()) {
                 writer.write(b + " ");
             }
             writer.newLine();
-            // 스테이지 클리어 정보 저장
-            boolean[] clear = user.getStageClear();
-            for (boolean b : clear) {
+
+            for (boolean b : user.getStageClear()) {
                 writer.write(b + " ");
             }
             writer.newLine();
@@ -210,6 +219,7 @@ public class UserManager {
         }
     }
 
+    // 캐릭터 정보 저장
     public static void saveCharacter(String userId, MyCharacter c) {
         if (c == null) return;
         String filePath = DATA_DIR + "/character_" + userId + ".txt";
@@ -235,6 +245,7 @@ public class UserManager {
         }
     }
 
+    // 캐릭터 정보 로드
     public static MyCharacter loadCharacter(String userId) {
         String filePath = DATA_DIR + "/character_" + userId + ".txt";
         File characterFile = new File(filePath);

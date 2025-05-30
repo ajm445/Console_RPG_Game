@@ -3,8 +3,12 @@ import java.util.Scanner;
 public class Store {
     static Scanner in = new Scanner(System.in);
 
+    // 상점 진입 메서드
     public static void store() {
+        // 현재 유저의 직업 정보를 가져옴
         String job = User.currentUser.getMyCharacter().getJob();
+
+        // 상점 메뉴 출력
         System.out.print("""
                 ***********************************
                           Console RPG Game
@@ -44,25 +48,30 @@ public class Store {
                 Enter number
                 """);
         System.out.print(">> ");
-        String input = in.nextLine();
+        String input = in.nextLine(); // 사용자 입력 받기
 
+        // 입력에 따른 분기 처리
         switch (input) {
             case "i" -> {
+                // 무기 정보 보기
                 System.out.println("[무기 정보]");
-                ItemManager.showAllItems();
-                store();
+                ItemManager.showAllItems(); // 모든 아이템 정보 출력
+                store(); // 다시 상점으로
             }
             case "b" -> {
+                // 뒤로가기 선택 시 메인 게임 화면으로 이동
                 System.out.println("[뒤로가기]");
                 GameManager.GameStart();
             }
             default -> {
                 try {
+                    // 숫자 입력 시 아이템 구매 처리
                     int choice = Integer.parseInt(input);
-                    StoreManager.purchase(choice, job); // 구매 로직 위임
+                    StoreManager.purchase(choice, job); // StoreManager에서 구매 처리
                 } catch (NumberFormatException e) {
+                    // 잘못된 입력 처리
                     System.out.println("숫자 또는 i/b만 입력 가능합니다.");
-                    store();
+                    store(); // 다시 상점으로
                 }
             }
         }
