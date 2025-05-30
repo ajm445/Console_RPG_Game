@@ -233,35 +233,131 @@ public class Stage {
         }
     }
 
-    public static void stage6() {
+    public static void stage6() { // 화나용 2
         if(Stage.stageClear[4]) {
+            MyCharacter player = User.currentUser.getMyCharacter();
+            int totalReward = 0;
+            boolean auto = autoMode(5);
+
+            System.out.println("\n스테이지 6 시작!");
+
+            // 화나용 2마리
+            for (int i = 0; i < 2; i++) {
+                Enemy enemy = Enemy.getEnemyByIndex(3); // 화나용
+                boolean success = fight(enemy, player, auto, 250);
+                if (!success) return;
+                totalReward += Objects.requireNonNull(enemy).getReward();
+            }
+
+            System.out.println("모든 적을 처치했습니다!");
             Stage.stageClear[5] = true;
+            User.currentUser.addGold(totalReward);
+            System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
+
+            UserManager.saveCharacter(User.currentUser.getId(), player);
+            UserManager.saveUser(User.currentUser);
+            GameManager.GameStart();
         } else {
             System.out.println("이전 스테이지를 클리어 해주세요!");
             GameManager.GameStart();
         }
     }
 
-    public static void stage7() {
+    public static void stage7() { // 화나용 2, 안아줘용 1
         if(Stage.stageClear[5]) {
+            MyCharacter player = User.currentUser.getMyCharacter();
+            int totalReward = 0;
+            boolean auto = autoMode(6);
+
+            System.out.println("\n스테이지 7 시작!");
+
+            // 단단해용 2마리
+            for (int i = 0; i < 2; i++) {
+                Enemy enemy = Enemy.getEnemyByIndex(3); // 화나용
+                boolean success = fight(enemy, player, auto, 250);
+                if (!success) return;
+                totalReward += Objects.requireNonNull(enemy).getReward();
+            }
+
+            // 안아줘용 1마리
+            Enemy enemy = Enemy.getEnemyByIndex(4); // 안아줘용
+            boolean success = fight(enemy, player, auto, 500);
+            if (!success) return;
+            totalReward += Objects.requireNonNull(enemy).getReward();
+
+            System.out.println("모든 적을 처치했습니다!");
             Stage.stageClear[6] = true;
+            User.currentUser.addGold(totalReward);
+            System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
+
+            UserManager.saveCharacter(User.currentUser.getId(), player);
+            UserManager.saveUser(User.currentUser);
+            GameManager.GameStart();
         } else {
             System.out.println("이전 스테이지를 클리어 해주세요!");
             GameManager.GameStart();
         }
     }
 
-    public static void stage8() {
+    public static void stage8() { // 안아줘용 2
         if(Stage.stageClear[6]) {
+            MyCharacter player = User.currentUser.getMyCharacter();
+            int totalReward = 0;
+            boolean auto = autoMode(7);
+
+            System.out.println("\n스테이지 8 시작!");
+
+            // 안아줘용 2마리
+            for (int i = 0; i < 2; i++) {
+                Enemy enemy = Enemy.getEnemyByIndex(4); // 안아줘용
+                boolean success = fight(enemy, player, auto, 800);
+                if (!success) return;
+                totalReward += Objects.requireNonNull(enemy).getReward();
+            }
+
+            System.out.println("모든 적을 처치했습니다!");
             Stage.stageClear[7] = true;
+            User.currentUser.addGold(totalReward);
+            System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
+
+            UserManager.saveCharacter(User.currentUser.getId(), player);
+            UserManager.saveUser(User.currentUser);
+            GameManager.GameStart();
         } else {
             System.out.println("이전 스테이지를 클리어 해주세요!");
             GameManager.GameStart();
         }
     }
-    public static void stage9() {
+    public static void stage9() { // 약해용 1, 단단해용 1, 나쌔용 1, 화나용 2, 안아줘용 3
+        MyCharacter player = User.currentUser.getMyCharacter();
+        Enemy[] enemies = {
+                Enemy.getEnemyByIndex(0), // 약해용
+                Enemy.getEnemyByIndex(1), // 단단해용
+                Enemy.getEnemyByIndex(2),  // 나쌔용
+                Enemy.getEnemyByIndex(3), // 화나용
+                Enemy.getEnemyByIndex(3), // 화나용
+                Enemy.getEnemyByIndex(4), // 안아줘용
+                Enemy.getEnemyByIndex(4), // 안아줘용
+                Enemy.getEnemyByIndex(4) // 안아줘용
+        };
+        int totalReward = 0;
+        boolean auto = autoMode(8);
         if(Stage.stageClear[7]) {
+            System.out.println("\n스테이지 5 시작!");
+            for (Enemy enemy : enemies) {
+                boolean success = fight(enemy, player, auto,1200);
+                if (!success) return; // 전투 실패 (플레이어 사망)
+                totalReward += Objects.requireNonNull(enemy).getReward();
+            }
+
+            System.out.println("모든 적을 처치했습니다!");
             Stage.stageClear[8] = true;
+            User.currentUser.addGold(totalReward);
+            System.out.println(totalReward + "골드를 획득했습니다! 현재 골드: " + User.currentUser.getGold());
+
+            UserManager.saveCharacter(User.currentUser.getId(), player);
+            UserManager.saveUser(User.currentUser);
+            GameManager.GameStart();
         } else {
             System.out.println("이전 스테이지를 클리어 해주세요!");
             GameManager.GameStart();
@@ -275,6 +371,7 @@ public class Stage {
             boolean auto = autoMode(9);
 
             System.out.println("스테이지 10 시작!");
+            System.out.println("마지막 전투다!");
 
             boolean success = fight(enemy, player, auto, 1000);
             if (success) {

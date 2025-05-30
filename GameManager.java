@@ -127,10 +127,10 @@ public class GameManager {
                     case 3 -> Stage.stage3();
                     case 4 -> Stage.stage4();
                     case 5 -> Stage.stage5();
-                    case 6 -> System.out.println("스테이지 6번");
-                    case 7 -> System.out.println("스테이지 7번");
-                    case 8 -> System.out.println("스테이지 8번");
-                    case 9 -> System.out.println("스테이지 9번");
+                    case 6 -> Stage.stage6();
+                    case 7 -> Stage.stage7();
+                    case 8 -> Stage.stage8();
+                    case 9 -> Stage.stage9();
                 }
                 return;
             } else if (input.equals("10")) {

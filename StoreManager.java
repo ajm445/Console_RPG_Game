@@ -24,13 +24,7 @@ public class StoreManager {
             return;
         }
 
-        if (User.currentUser.getGold() < price) {
-            System.out.println("골드가 부족합니다. 현재 골드: " + User.currentUser.getGold());
-            Store.store();
-            return;
-        }
-
-        if (choice <= 13) { // 공격/방어 아이템
+        if (choice <= 14) { // 공격/방어 아이템
             if (User.currentUser.hasPurchased(choice - 1)) {
                 System.out.print("이미 구매한 아이템입니다. 교체하시겠습니까? (Y|N): ");
                 char confirm = Store.in.next().charAt(0);
@@ -39,10 +33,16 @@ public class StoreManager {
                     Store.store();
                     return;
                 }
+            } else {
+                if (User.currentUser.getGold() < price) {
+                    System.out.println("골드가 부족합니다. 현재 골드: " + User.currentUser.getGold());
+                    Store.store();
+                    return;
+                }
+                User.currentUser.loseGold(price);
             }
 
             User.currentUser.setPurchased(choice - 1);
-            User.currentUser.loseGold(price);
             if (selectedItem.isWeapon()) {
                 User.currentUser.setAtkItem(choice - 1);
                 System.out.println("공격 아이템 장착 완료!");
