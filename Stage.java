@@ -47,7 +47,7 @@ public class Stage {
             }
 
             if (!enemy.isAlive()) {
-                System.out.println(enemy.getName() + "을(를) 쓰러뜨렸다!");
+                System.out.println(enemy.getName() + "을(를) 쓰러뜨렸다!\n");
                 return true;
             }
 
@@ -59,6 +59,7 @@ public class Stage {
                 System.out.println("용에게 당했습니다...");
                 User.currentUser.loseGold(lostGold);
                 System.out.println("도망치다 돈을 잃었습니다...");
+                UserManager.saveUser(User.currentUser);
                 UserManager.saveCharacter(User.currentUser.getId(), player);
                 GameManager.GameStart();
                 return false;
@@ -90,6 +91,7 @@ public class Stage {
         }
 
         // 저장 및 복귀
+        User.currentUser.setStageClear(Stage.stageClear); // 스테이지 클리어 정보 저장
         UserManager.saveUser(User.currentUser);
         UserManager.saveCharacter(User.currentUser.getId(), player);
         GameManager.GameStart();

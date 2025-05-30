@@ -18,6 +18,7 @@ public class User {
     private boolean[] itemPurchased = new boolean[ItemManager.getItems().length];
     private int storedAtkItem = -1;
     private int storedDefItem = -1;
+    private boolean[] stageClear = new boolean[10]; // 스테이지 클리어 여부
 
     // 생성자
     public User(String id, String pw) {
@@ -52,6 +53,12 @@ public class User {
     public void setStoredDefItem(int idx){
         storedDefItem = idx;
         if(myCharacter != null) myCharacter.setDefItemIndex(idx);
+    }
+    public boolean[] getStageClear() {
+        return stageClear;
+    }
+    public void setStageClear(boolean[] stageClear) {
+        this.stageClear = stageClear;
     }
 
     // ──────────────────────── 유틸 메서드 ────────────────────────

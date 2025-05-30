@@ -148,12 +148,22 @@ public class UserManager {
 
             line = reader.readLine();
             if (line == null) throw new IOException("아이템 구매 정보 누락");
-            String[] bools = line.split(" ");
-            boolean[] purchased = new boolean[bools.length];
-            for (int i = 0; i < bools.length; i++) {
-                purchased[i] = Boolean.parseBoolean(bools[i]);
+            String[] purchasedStr = line.split(" ");
+            boolean[] purchased = new boolean[purchasedStr.length];
+            for (int i = 0; i < purchasedStr.length; i++) {
+                purchased[i] = Boolean.parseBoolean(purchasedStr[i]);
             }
             user.setItemPurchased(purchased);
+
+            line = reader.readLine();
+            if(line == null) throw new IOException("스테이지 클리어 정보 누락");
+            String[] stageStr = line.split(" ");
+            boolean[] stageClear = new boolean[stageStr.length];
+            for (int i = 0; i < stageStr.length; i++) {
+                stageClear[i] = Boolean.parseBoolean(stageStr[i]);
+            }
+            user.setStageClear(stageClear);
+            Stage.stageClear = user.getStageClear();
 
             return user;
         } catch (IOException | NumberFormatException e) {
@@ -183,13 +193,18 @@ public class UserManager {
                 writer.write("-1");
                 writer.newLine();
             }
-
+            // 아이템 구매 여부 정보 저장
             boolean[] purchased = user.getItemPurchased();
             for (boolean b : purchased) {
                 writer.write(b + " ");
             }
             writer.newLine();
-
+            // 스테이지 클리어 정보 저장
+            boolean[] clear = user.getStageClear();
+            for (boolean b : clear) {
+                writer.write(b + " ");
+            }
+            writer.newLine();
         } catch (IOException e) {
             System.out.println("유저 저장 실패: " + e.getMessage());
         }
