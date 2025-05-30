@@ -2,13 +2,13 @@ public class ItemManager {
     private static final Item[] items = {
             new Item("나무 막대기",10,0,0),
             new Item("철 검",30,0,0),
-            new Item("대검",100,0,0),
+            new Item("대검",70,0,0),
             new Item("나무 단검",20,0,0),
             new Item("철 단검",40,0,0),
-            new Item("특화 단검",110,0,0),
+            new Item("특화 단검",80,0,0),
             new Item("낡은 지팡이",40,0,0),
             new Item("일반 지팡이",70,0,0),
-            new Item("고대 지팡이",120,0,0),
+            new Item("고대 지팡이",100,0,0),
             new Item("고대 무기",200,0,0),
             new Item("나무 갑옷",0,20,0),
             new Item("철 갑옷",0,60,0),
@@ -19,8 +19,8 @@ public class ItemManager {
     };
 
     private static final int[] itemPrices = {
-            100,500,1000, 100,500,1000, 100,500,10000,2000,
-            200,500,1000,2000,
+            200,1000,2500, 200,1000,2500, 200,1000,2500,5000,
+            200,600,2000,6000,
             50,150
     };
 

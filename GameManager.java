@@ -126,7 +126,7 @@ public class GameManager {
                     case 2 -> Stage.stage2();
                     case 3 -> Stage.stage3();
                     case 4 -> Stage.stage4();
-                    case 5 -> System.out.println("스테이지 5번");
+                    case 5 -> Stage.stage5();
                     case 6 -> System.out.println("스테이지 6번");
                     case 7 -> System.out.println("스테이지 7번");
                     case 8 -> System.out.println("스테이지 8번");
